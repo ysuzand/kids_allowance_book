@@ -5,21 +5,31 @@ import cupcake from '@assets/cupcake.svg'
 
 const Calculator = () => {
     const [amount, setAmount] = useState(1000)
-    const [minusAmount, setMinusAmount] = useState(0)
+    const [formType, setFormType] = useState('expense')
+    const [inputData, setInputData] = useState({})
+    const [inputAmount, setInputAmount] = useState(0)
+    const isExpense = formType === 'expense'
 
     const calcAmount = (formData: {[key: string]: FormDataEntryValue}) => {
-        const minusValue = Object.values(formData).reduce((total, value) => total + (+value), 0)
-        setMinusAmount(minusValue)
+        setInputData(formData)
+        const myValue = Object.values(formData).reduce((total, value) => total + (+value), 0)
+        setInputAmount(myValue)
+    }
+
+    const toggleType = () => {
+        isExpense ? setFormType('income') : setFormType('expense')
     }
 
     useEffect(() => {
-        setAmount(current => current - minusAmount)
-    }, [minusAmount])
+        setAmount(current => isExpense ? current - inputAmount : current + inputAmount)
+    }, [inputAmount])
 
     return (
         <>
-            <Form amount={amount} onCalc={calcAmount}/>
-            { minusAmount }
+            <div className='text-4xl'>{ amount }</div>
+            <button onClick={toggleType}>REGISTER MY {isExpense ? 'INCOME' : 'EXPENSE'}</button>
+            <Form amount={amount} onCalc={calcAmount} type={formType}/>
+            <div>{ inputAmount }</div>
         </>
     )
 }

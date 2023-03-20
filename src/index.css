@@ -4,4 +4,6 @@
 
 html, body {
     font-family: "Sono", serif;
+    @apply bg-amber-400;
 }
+

@@ -1,25 +1,30 @@
 
-export const formMap: FormItem[] = [
-    {
-        component: 'p',
-        content: 'hello'
-    },
+export const expenseFormMap: FormItem[] = [
     {
         component: 'Input',
         props: {
             id: 'snacks',
             type: 'number',
-            color: 'bg-fuchsia-500',
-            icon: './assets/cupcake.svg'
+            color: 'bg-amber-500',
+            icon: './assets/food.svg'
         }
     },
     {
         component: 'Input',
         props: {
             id: 'hobby',
-            icon: './assets/cupcake.svg',
-            color: 'bg-indigo-500',
+            icon: './assets/sports.svg',
+            color: 'bg-lime-500',
             type: 'number',
+        }
+    },
+    {
+        component: 'Input',
+        props: {
+            id: 'fashion',
+            type: 'number',
+            color: 'bg-rose-500',
+            icon: './assets/clothes.svg'
         }
     },
     {
@@ -27,8 +32,20 @@ export const formMap: FormItem[] = [
         props: {
             id: 'school',
             type: 'number',
-            color: 'bg-rose-500',
-            icon: './assets/cupcake.svg'
+            color: 'bg-blue-500',
+            icon: './assets/school.svg'
+        }
+    }
+]
+
+export const incomeFormMap: FormItem[] = [
+    {
+        component: 'Input',
+        props: {
+            id: 'income',
+            type: 'number',
+            color: 'bg-amber-500',
+            icon: './assets/coins.svg'
         }
     }
 ]
