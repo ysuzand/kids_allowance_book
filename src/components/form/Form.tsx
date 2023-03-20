@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useCallback } from 'react'
 import { useState, createElement } from 'react'
 import Input from '@components/form/Input'
+import SubmitButton from '@components/form/Submit'
 import cupcake from '@assets/cupcake.svg'
 import { formMap } from '../../map/form'
 import { Wait } from '@utils/index'
@@ -71,16 +72,15 @@ const Form = ({
                 }
                 return createElement(FormItem[item.component],  {...item.props, key: i})
             }
-            return createElement(item.component, { key: i })
+            return createElement(item.component, { children: item.content, key: i })
         })
     
     return (
         <>
             <div className='text-4xl'>{ amount }</div>
             <form className='flex gap-2 flex-col' onSubmit={onSubmit}>
-                <img src={ cupcake } alt='' width='36' height='36' />
                 { getFormItems().map(item => item)}
-                <button>Calculate</button>
+                <SubmitButton>Calculate</SubmitButton>
             </form>
             
         </>

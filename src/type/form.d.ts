@@ -8,8 +8,8 @@ interface InputProps {
     type: HTMLInputTypeAttribute;
     id: string;
     icon?: string;
+    color?: string;
     value?: string | number;
-    placeholder?: string;
     onChange?: (e: ChangeEvent<HTMLInputElement>) => void
 }
 

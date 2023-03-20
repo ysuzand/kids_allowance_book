@@ -9,22 +9,26 @@ export const formMap: FormItem[] = [
         props: {
             id: 'snacks',
             type: 'number',
-            icon: 'cupcake'
+            color: 'bg-fuchsia-500',
+            icon: './assets/cupcake.svg'
         }
     },
     {
         component: 'Input',
         props: {
             id: 'hobby',
+            icon: './assets/cupcake.svg',
+            color: 'bg-indigo-500',
             type: 'number',
-            placeholder: '0'
         }
     },
     {
         component: 'Input',
         props: {
             id: 'school',
-            type: 'number'
+            type: 'number',
+            color: 'bg-rose-500',
+            icon: './assets/cupcake.svg'
         }
     }
 ]
