@@ -1,14 +1,26 @@
+import type { ReactElement } from 'react'
 import { useState } from 'react'
-
-import Calculator from '@components/Calculator'
+import { UI } from '@type/enums'
+import Calculator from '@components/section/Calculator'
+import Graph from '@components/section/Graph'
+import IconButton from '@components/Icon'
 import './App.css'
 
-
-function App() {
-
+const App = (): ReactElement => {
+  const [ui, setUi] = useState(UI.CALC)
+  const changeUi = (ui: UI) => {
+    setUi(ui)
+  }
   return (
-    <div className='App'>
-      <Calculator />
+    <div className='flex flex-col'>
+      <button
+        onClick={ () => changeUi(UI.GRAPH)}
+        className='bg-transparent w-fit'
+      >
+        <IconButton color='bg-white' iconSrc='/assets/graph.svg' />
+      </button>
+        {ui === UI.CALC ? <Calculator className=''/> : null }
+        {ui === UI.GRAPH ? <Graph className=''/> : null }
     </div>
   )
 }

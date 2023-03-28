@@ -3,7 +3,7 @@ export const expenseFormMap: FormItem[] = [
     {
         component: 'Input',
         props: {
-            id: 'snacks',
+            id: 'food',
             type: 'number',
             color: 'bg-amber-500',
             icon: './assets/food.svg'

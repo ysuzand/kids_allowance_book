@@ -7,8 +7,8 @@ interface FormItem {
 interface InputProps {
     type: HTMLInputTypeAttribute;
     id: string;
-    icon?: string;
-    color?: string;
+    icon: string;
+    color: string;
     value?: string | number;
     onChange?: (e: ChangeEvent<HTMLInputElement>) => void
 }

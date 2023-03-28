@@ -5,11 +5,18 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "serve": "nodemon server",
+    "start": "concurrently \"npm run serve\" \"npm run dev\"",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
+    "axios": "^1.3.4",
+    "chart.js": "^4.2.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
@@ -17,7 +24,10 @@
     "@types/react-dom": "^18.0.10",
     "@vitejs/plugin-react": "^3.1.0",
     "autoprefixer": "^10.4.14",
+    "concurrently": "^7.6.0",
+    "nodemon": "^2.0.22",
     "postcss": "^8.4.21",
+    "sqlite3": "^5.1.6",
     "tailwindcss": "^3.2.7",
     "typescript": "^4.9.3",
     "vite": "^4.1.0"

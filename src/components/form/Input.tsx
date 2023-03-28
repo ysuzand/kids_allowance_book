@@ -1,5 +1,6 @@
 import type { ChangeEvent } from 'react'
 import { useState } from 'react'
+import Icon from '@components/Icon'
 
 const Input = ({
     type,
@@ -11,11 +12,7 @@ const Input = ({
 }: InputProps) => {    
     return (
         <div className='w-full flex gap-1'>
-            <div
-                className={`${color} rounded-full w-12 h-12 flex items-center justify-center border-4 border-black`}
-            >
-                <img src={icon} width='28' height='28' />
-            </div>
+            <Icon color={color} iconSrc={icon} />
             <div className='flex relative w-5/6'>
             <label htmlFor={id} className='w-0 invisible'>{id}</label>
             <input
@@ -23,8 +20,8 @@ const Input = ({
                 name={id}
                 onChange={e => onChange(e)}
                 value={value}
-                placeholder='0'
-                className='border-black rounded-full w-full py-1 pl-4 pr-14 border-4'
+                placeholder={`${id}: 0`}
+                className='border-black rounded-full w-full py-1 pl-4 pr-14 border-4 capitalize'
                 type={type}
             />
             <span className='absolute right-6 top-3'>Kr</span>

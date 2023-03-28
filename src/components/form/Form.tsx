@@ -36,10 +36,11 @@ const FormItem: {[key: string]: ({ type, id, onChange }: InputProps) => JSX.Elem
 }
 
 let initFormValues: {[key: string]: number | string} = {
-    'snacks': '',
+    'food': '',
     'school': '',
     'hobby': '',
-    'fashion': ''
+    'fashion': '',
+    'income': ''
 }
 
 const Form = ({
@@ -49,12 +50,11 @@ const Form = ({
 }: {
     amount: number;
     type: string;
-    onCalc: (value: {[key: string]: FormDataEntryValue}) => void;
+    onCalc: (value: {formValue: {[key: string]: FormDataEntryValue}; subTotal: number}) => void;
 }) => {
     const [state, setState] = useState<{[key: string]: number | string}>(initFormValues)
     const [subTotal, setSubTotal] = useState(0)
     const [error, setError] = useState('')
-    // const [item, dispatch] = useReducer(reducer, [])
 
     const initForm = () => {
         setState(initFormValues)
@@ -66,23 +66,29 @@ const Form = ({
        
         inputValue === 0
         ? setState({...state, [item]: ''})
-        : setState({...state, [item]: inputValue})
-        // dispatch({
-        //     type: 'SET_INPUT',
-        //     id: e.target.id,
-        //     input: inputValue
-        // })
+        : setState({...state, [item]: inputValue})        
+    }
+
+    const getCalcValues = (formTarget: HTMLFormElement): {formValue: {[key: string]: FormDataEntryValue}; subTotal: number} => {
+        const formData = new FormData(formTarget as HTMLFormElement)
+        const formValue = Object.fromEntries(formData.entries())
+        const subTotal = calcSubTotal(formValue)
         
-        // setSubTotal(currentTotal => currentTotal + inputValue)
-        
+        return { formValue, subTotal }
     }
 
     const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault()
-        const data = new FormData(e.target as HTMLFormElement)
-        const valueObject = Object.fromEntries(data.entries());
-        onCalc(valueObject)
+        const calcValues = getCalcValues(e.target as HTMLFormElement)
+        onCalc(calcValues)
         initForm()
+    }
+
+    const calcSubTotal = (formData: {[key: string]: FormDataEntryValue}) => {
+        const subTotal = Object.values(formData).reduce((total, value) => total + (+value), 0)
+        setSubTotal(subTotal)
+        
+        return subTotal
     }
 
     const createForm = (type: string) => {
@@ -106,15 +112,22 @@ const Form = ({
         })
 
     }
-        
- 
 
+    const expenseForm = createForm('expense')
+    const incomeForm = createForm('income')
     
     return (
         <>
             <form className='flex flex-col gap-10' onSubmit={onSubmit}>
-                <div className='flex flex-col gap-4'>
-                { createForm(type).map(item => item) }
+                <div className='flex flex-row'>
+                    <div className='flex flex-col gap-4 w-full'>
+                        {
+                            type === 'expense'
+                            ? expenseForm.map(item => item)
+                            : incomeForm.map(item => item)
+                        }
+                        {/* { createForm(type).map(item => item) } */}
+                    </div>
                 </div>
                 <SubmitButton>{type === 'expense' ? 'Calculate' : 'Add'}</SubmitButton>
             </form>
