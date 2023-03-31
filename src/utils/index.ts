@@ -1,4 +1,4 @@
-export const Wait = (cb: () => void, timeout: number = 200) => {
-    setTimeout(cb, timeout)   
+export const Wait = (resolve: () => void, timeout: number = 200) => {
+    return new Promise(resolve => setTimeout(resolve, timeout))
 }
 

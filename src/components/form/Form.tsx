@@ -2,7 +2,6 @@ import { ChangeEvent, FormEvent, useCallback, useReducer } from 'react'
 import { useState, createElement, useMemo } from 'react'
 import Input from '@components/form/Input'
 import SubmitButton from '@components/form/Submit'
-import cupcake from '@assets/cupcake.svg'
 import { expenseFormMap, incomeFormMap } from '../../map/form'
 import { Wait } from '@utils/index'
 
