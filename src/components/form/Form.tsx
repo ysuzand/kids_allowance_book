@@ -1,37 +1,23 @@
-import { ChangeEvent, FormEvent, useCallback, useReducer } from 'react'
-import { useState, createElement, useMemo } from 'react'
+import type { ChangeEvent, FormEvent } from 'react'
+import { useState, createElement, useMemo} from 'react'
 import Input from '@components/form/Input'
+import Select from '@components/form/Select'
 import SubmitButton from '@components/form/Submit'
 import { expenseFormMap, incomeFormMap } from '../../map/form'
-import { Wait } from '@utils/index'
 
-const reducer = (
-    state: {
-        [key: string]: number;
-    }[] | undefined,
-    action: {
-        type: string,
-        id: string,
-        input: number;
-    }
-) => {
-    if (action.type === 'SET_INPUT') {
-        const newItem = { [action.id]: action.input }
-        const newItemKeys = state?.map(item => Object.keys(item)).flat() ?? []
-        state = !state
-        ? [newItem]
-        : newItemKeys.includes(action.id)
-            ? state //@TODO: replace item
-            : [...state, newItem]
-    
-    
-        console.log(state)
-        return state
-    }
+
+type InputComponent = ({ type, id, icon, color, width, placeholder, suffix, onChange, value }: InputProps) => JSX.Element
+type InputSelectComponent = ({ options, id }: InputSelectProps) => JSX.Element
+interface IFormItem {
+    [key: string]: 
+        InputComponent
+        |
+        InputSelectComponent
 }
 
-const FormItem: {[key: string]: ({ type, id, onChange }: InputProps) => JSX.Element} = {
-    'Input': Input
+const formItem: IFormItem = {
+    'Input': Input, 
+    'Select': Select
 }
 
 let initFormValues: {[key: string]: number | string} = {
@@ -39,15 +25,15 @@ let initFormValues: {[key: string]: number | string} = {
     'school': '',
     'hobby': '',
     'fashion': '',
-    'income': ''
+    'income': '',
+    'year': '',
+    'month': ''
 }
 
 const Form = ({
-    amount,
     type,
     onCalc
 }: {
-    amount: number;
     type: string;
     onCalc: (value: {formValue: {[key: string]: FormDataEntryValue}; subTotal: number}) => void;
 }) => {
@@ -92,11 +78,39 @@ const Form = ({
 
     const createForm = (type: string) => {
         const form = type === 'expense' ? expenseFormMap : incomeFormMap
-        return (form as FormItem[]).map((item, i) => {
-            if (typeof FormItem[item.component] !== 'undefined') {
-                if (item.component === 'Input') {                    
+        return form.map((item, i) => {
+            if ('components' in item) {
+                return (
+                    <div key={i} className='flex justify-end gap-2 h-12'>
+                        {
+                            (item.components as ComponentInArray[]).map((componentRow, j) => {
+                                if (typeof formItem[componentRow.component] !== 'undefined') {
+                                    const component = componentRow.component as string
+                                    if (component === 'Input') {
+                                        return createElement(
+                                            formItem[component] as InputComponent,
+                                            {
+                                                ...componentRow.props,
+                                                value: state[componentRow.props.id],
+                                                onChange: handleInputValue,
+                                                key: 'nested-' + j
+                                            }
+                                        )
+                                    }
+                                    return createElement(
+                                        formItem[component] as  InputSelectComponent, 
+                                        {...componentRow.props, key: 'nested-' + j}
+                                    )
+                                }
+                            })
+                        }
+                    </div>
+                ) 
+            }
+            if (item.component && typeof formItem[item.component] !== 'undefined') {
+                if (item.component === 'Input') {             
                     return createElement(
-                        FormItem[item.component],
+                        formItem[item.component] as InputComponent,
                         {  
                             ...item.props,
                             value: state[item.props.id],
@@ -105,15 +119,21 @@ const Form = ({
                         }
                     )
                 }
-                return createElement(FormItem[item.component],  {...item.props, key: i})
+                return createElement(
+                    formItem[item.component] as InputSelectComponent, 
+                    {...item.props, key: i}
+                )
             }
-            return createElement(item.component, { children: item.content, key: i })
+            return createElement(
+                item.component!,
+                { children: item.content, key: i }
+            )
         })
 
     }
 
-    const expenseForm = createForm('expense')
-    const incomeForm = createForm('income')
+    const expenseForm = useMemo(() => createForm('expense'), [])
+    const incomeForm = useMemo(() => createForm('income'),[])
     
     return (
         <>
@@ -122,10 +142,9 @@ const Form = ({
                     <div className='flex flex-col gap-4 w-full'>
                         {
                             type === 'expense'
-                            ? expenseForm.map(item => item)
-                            : incomeForm.map(item => item)
+                            ? expenseForm
+                            : incomeForm
                         }
-                        {/* { createForm(type).map(item => item) } */}
                     </div>
                 </div>
                 <SubmitButton>{type === 'expense' ? 'Calculate' : 'Add'}</SubmitButton>

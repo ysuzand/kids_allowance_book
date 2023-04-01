@@ -2,6 +2,7 @@ import type { ReactElement } from 'react'
 import { useState } from 'react'
 import { UI } from '@type/enums'
 import UserInfoProvider from '@providers/UserProvider'
+import Login from '@components/section/Login'
 import Calculator from '@components/section/Calculator'
 import Graph from '@components/section/Graph'
 import IconButton from '@components/Icon'
@@ -16,6 +17,9 @@ const App = (): ReactElement => {
   return (
     <UserInfoProvider>
       <div className='flex flex-col'>
+        {
+          <Login />
+        }
         <button
           onClick={changeUi}
           className='bg-transparent w-fit'

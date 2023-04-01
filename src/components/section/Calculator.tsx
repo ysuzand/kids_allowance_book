@@ -37,7 +37,8 @@ const Calculator = ({className}: {className: string}) => {
                 <div className='text-4xl'>{ total }</div>
             </div>
             <Switch onChange={switchForm}/>
-            <Form amount={total} onCalc={updateTotal} type={formType}/>
+            <hr className='mb-4' />
+            <Form onCalc={updateTotal} type={formType}/>
         </div>
     )
 }

@@ -7,12 +7,15 @@ const Input = ({
     id,
     icon,
     color,
-    onChange = (event: ChangeEvent) => {},
+    width,
+    placeholder,
+    suffix,
+    onChange = (event: ChangeEvent): void => {},
     value
 }: InputProps) => {    
     return (
         <div className='w-full flex gap-1'>
-            <Icon color={color} iconSrc={icon} />
+            { icon && color ? <Icon color={color} iconSrc={icon} /> : null }
             <div className='flex relative w-5/6'>
             <label htmlFor={id} className='w-0 invisible'>{id}</label>
             <input
@@ -20,11 +23,11 @@ const Input = ({
                 name={id}
                 onChange={e => onChange(e)}
                 value={value}
-                placeholder={`${id}: 0`}
-                className='border-black rounded-full w-full py-1 pl-4 pr-14 border-4 capitalize'
+                placeholder={placeholder ?? `${id}: 0`}
+                className={`border-black rounded-full py-1 pl-4 border-4 capitalize w-full ${width === 'full' ? 'pr-14' :''}`}
                 type={type}
             />
-            <span className='absolute right-6 top-3'>Kr</span>
+            <span className='absolute right-6 top-3 text-gray-500'>{suffix ?? 'Kr'}</span>
             </div>
         </div>
     )
