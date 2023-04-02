@@ -15,3 +15,7 @@ export const GetTotalDB = (uid: number) => {
 export const UpdateTotalDB = (data: {total: number}, uid: number) => {
     AxiosInstance.patch(`/savings/${uid}`, data)
 }
+
+export const CheckAuth = ({uid}: {uid: number}) => {
+    return AxiosInstance.post('/login')
+}

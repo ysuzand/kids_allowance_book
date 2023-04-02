@@ -48,6 +48,7 @@ const Form = ({
     const handleInputValue = (e: ChangeEvent<HTMLInputElement>) => {
         const item = e.target.id
         const inputValue = +e.target.value
+        console.log(inputValue)
        
         inputValue === 0
         ? setState({...state, [item]: ''})
@@ -79,6 +80,7 @@ const Form = ({
     const createForm = (type: string) => {
         const form = type === 'expense' ? expenseFormMap : incomeFormMap
         return form.map((item, i) => {
+            // If several components need to be in one row.
             if ('components' in item) {
                 return (
                     <div key={i} className='flex justify-end gap-2 h-12'>
@@ -107,7 +109,8 @@ const Form = ({
                     </div>
                 ) 
             }
-            if (item.component && typeof formItem[item.component] !== 'undefined') {
+            // If one component per row.
+            else if (item.component && typeof formItem[item.component] !== 'undefined') {
                 if (item.component === 'Input') {             
                     return createElement(
                         formItem[item.component] as InputComponent,
@@ -129,11 +132,10 @@ const Form = ({
                 { children: item.content, key: i }
             )
         })
-
     }
 
-    const expenseForm = useMemo(() => createForm('expense'), [])
-    const incomeForm = useMemo(() => createForm('income'),[])
+    const expenseForm = createForm('expense')
+    const incomeForm = createForm('income')
     
     return (
         <>

@@ -9,27 +9,39 @@ import IconButton from '@components/Icon'
 import './App.css'
 
 const App = (): ReactElement => {
-  const [ui, setUi] = useState(UI.CALC)
+  const [ui, setUi] = useState(UI.LOGIN)
+  const [isAuth, setIsAuth] = useState(false)
   const changeUi = () => {
     const updateUI = ui === UI.CALC ? UI.GRAPH : UI.CALC
     setUi(updateUI)
   }
+
+  const checkAuth = (isAuth: boolean) => {
+    console.log("auth?: ", isAuth)
+    if (isAuth) {
+      setIsAuth(true)
+      setUi(UI.CALC)
+    } else {
+      setUi(UI.NO_AUTH)
+    }
+  }
   return (
-    <UserInfoProvider>
       <div className='flex flex-col'>
-        {
-          <Login />
+        { ui !== UI.LOGIN && isAuth
+          ? <UserInfoProvider>
+              <button
+                onClick={changeUi}
+                className='bg-transparent w-fit'
+              >
+                <IconButton color='bg-white' iconSrc={`/assets/${ui === UI.CALC ? 'graph' : 'bank'}.svg`} />
+              </button>
+              {ui === UI.CALC ? <Calculator className=''/> : null }
+              {ui === UI.GRAPH ? <Graph className=''/> : null }
+            </UserInfoProvider>
+          : <Login onAuth={checkAuth}/>
         }
-        <button
-          onClick={changeUi}
-          className='bg-transparent w-fit'
-        >
-          <IconButton color='bg-white' iconSrc={`/assets/${ui === UI.CALC ? 'graph' : 'bank'}.svg`} />
-        </button>
-          {ui === UI.CALC ? <Calculator className=''/> : null }
-          {ui === UI.GRAPH ? <Graph className=''/> : null }
+        
       </div>
-    </UserInfoProvider>
   )
 }
 

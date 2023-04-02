@@ -36,4 +36,22 @@ const updateTotal = (req, res) => {
     })
 }
 
-export default { getTotal, updateTotal }
+const findUser = (req, res) => {
+    const sql = `SELECT * FROM users WHERE uid = ?`
+    const params = [req.body.uid]
+    db.get(sql, params, (err, row) => {
+        if (err) {
+            res.status(401).json({
+                success: false,
+                message: 'Not authorized.'
+            })
+        } else {
+            res.status(200).json({
+                success: true,
+                data: row
+            })
+        }
+    })
+}
+
+export default { getTotal, updateTotal, findUser }

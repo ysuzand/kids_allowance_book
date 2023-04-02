@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { GetTotalDB, UpdateTotalDB } from '@utils/fetch'
+import { GetTotalDB, UpdateTotalDB } from '@utils/ajax'
 import { useUserInfo } from '@providers/UserProvider'
 import Form from '@components/form/Form'
 import Switch from '@components/Switch'
