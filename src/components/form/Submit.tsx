@@ -1,9 +1,12 @@
-import { PropsWithChildren } from 'react'
-
-const SubmitButton = ({children}: PropsWithChildren) => {
+const SubmitButton = ({
+    children,
+    disabled = false
+}: SubmitButtonProps) => {
 
     return (
-        <button className='transition ease-in h-12 border-black border-4 rounded-full bg-indigo-600 hover:bg-indigo-800 text-white text-2x'>
+        <button
+            disabled={disabled}
+            className='transition ease-in h-12 border-black border-4 rounded-full bg-indigo-600 hover:bg-indigo-800 text-white text-2x'>
             { children }
         </button>
     )

@@ -1,3 +1,7 @@
+interface FormValue {
+    [key: string]: FormDataEntryValue
+}
+
 interface FormItem {
     component?: string;
     props?: InputProps | InputSelectProps | Attributes | undefined;
@@ -35,6 +39,9 @@ interface InputSelectProps {
     defaultValue?: string | number;
 }
 
-
+interface SubmitButtonProps {
+    children: ReactNode;
+    disabled?: boolean;
+}
 
 interface 

@@ -36,6 +36,40 @@ const updateTotal = (req, res) => {
     })
 }
 
+const _checkSavingMonthExist = (uid, year, month) => {
+    let isNewMonth = true
+    let row = null
+    const getSavingSql = `
+        SELECT *
+        FROM saving_group
+        WHERE uid = ?
+        AND year = ?
+        AND month = ?`
+    const getSavingParams = [uid, year, month]
+    db.get(getSavingSql, getSavingParams, (err, row) => {
+        if (err) {
+            isNewMonth = false
+        } else {
+            row = row
+        }
+    })
+    return { isNewMonth, row }
+}
+
+const addSavings = (req, res) => {
+    const { uid, year, month } = req.body
+    // Check if there are more savings in the same year&month
+    const {isNewMonth, row} = _checkSavingMonthExist(uid, year, month)
+    // If not, save it
+    if (isNewMonth && row === null) {
+
+    }
+    // Else sum up the saving values
+    else {
+
+    }
+}
+
 const findUser = (req, res) => {
     const sql = `SELECT * FROM users WHERE uid = ?`
     const params = [req.body.uid]
@@ -54,4 +88,9 @@ const findUser = (req, res) => {
     })
 }
 
-export default { getTotal, updateTotal, findUser }
+export default {
+    getTotal,
+    updateTotal,
+    addSavings,
+    findUser
+}

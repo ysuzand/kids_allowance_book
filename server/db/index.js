@@ -20,11 +20,13 @@ CREATE TABLE IF NOT EXISTS savings (
 const CREATE_SAVING_GROUP_TABLE = `
 CREATE TABLE IF NOT EXISTS saving_group (
     uid integer FOREIGN KEY REFERENCES users(uid),
-    yearmonth text,
+    year text,
+    month text,
     fashion integer,
     food integer,
     hobby integer,
-    school integer
+    school integer,
+    income interger
 ) WITHOUT ROWID`
 
 const INIT_USER = ` INSERT INTO users
@@ -34,8 +36,8 @@ const INIT_SAVINGS = `  INSERT INTO savings
                         (uid, total)
                         VALUES (?,?)`
 const INIT_GROUP = `INSERT INTO saving_group
-                    (yearmonth, fashion, food, hobby, school)
-                    VALUES (?,?,?,?,?)`
+                    (year, month, fashion, food, hobby, school, income)
+                    VALUES (?,?,?,?,?,?,?)`
 
 db.serialize(() => {
     // db.run(`DROP TABLE users`)
@@ -69,7 +71,7 @@ db.serialize(() => {
     //         } else {
     //             console.log('group table insert')
     //             const stmt = db.prepare(INIT_GROUP)
-    //             stmt.run(['2023-01', 100, 100, 0, 0])
+    //             stmt.run(['2023', '01', 100, 100, 0, 0])
     //         }
     //     })
 })

@@ -27,7 +27,8 @@ const App = (): ReactElement => {
   }
   return (
       <div className='flex flex-col'>
-        { ui !== UI.LOGIN && isAuth
+        { 
+        ui !== UI.LOGIN && isAuth
           ? <UserInfoProvider>
               <button
                 onClick={changeUi}

@@ -22,10 +22,11 @@ app.post('/api/login',controllers.findUser)
  * :OPERATION: | :METHOD: | :PATH:
  * -----------------------------
  * Get your savings | GET | '/api/savings?uid=?'
- * Add your new saving | PATCH | '/api/savings/:uid'
+ * Add your new total | PATCH | '/api/savings/:uid'
  */
 app.get('/api/savings/:uid', controllers.getTotal)
 app.patch('/api/savings/:uid', controllers.updateTotal)
+// app.put('/api/savings/add', controllers.addSavings)
 
 app.listen(port, () => {
     console.log(`Server is running on: ${port}`)

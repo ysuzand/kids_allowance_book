@@ -1,5 +1,6 @@
 import type { ChangeEvent, FormEvent } from 'react'
 import { useState, createElement, useMemo} from 'react'
+import { getFormValueObject, exploitKeysFromData } from '@utils/format'
 import Input from '@components/form/Input'
 import Select from '@components/form/Select'
 import SubmitButton from '@components/form/Submit'
@@ -7,7 +8,7 @@ import { expenseFormMap, incomeFormMap } from '../../map/form'
 
 
 type InputComponent = ({ type, id, icon, color, width, placeholder, suffix, onChange, value }: InputProps) => JSX.Element
-type InputSelectComponent = ({ options, id }: InputSelectProps) => JSX.Element
+type InputSelectComponent = ({ options, id, defaultValue }: InputSelectProps) => JSX.Element
 interface IFormItem {
     [key: string]: 
         InputComponent
@@ -20,7 +21,7 @@ const formItem: IFormItem = {
     'Select': Select
 }
 
-let initFormValues: {[key: string]: number | string} = {
+const initFormValues: {[key: string]: number | string} = {
     'food': '',
     'school': '',
     'hobby': '',
@@ -35,11 +36,10 @@ const Form = ({
     onCalc
 }: {
     type: string;
-    onCalc: (value: {formValue: {[key: string]: FormDataEntryValue}; subTotal: number}) => void;
+    onCalc: (value: {formValue: FormValue; subTotal: number}) => void;
 }) => {
     const [state, setState] = useState<{[key: string]: number | string}>(initFormValues)
     const [subTotal, setSubTotal] = useState(0)
-    const [error, setError] = useState('')
 
     const initForm = () => {
         setState(initFormValues)
@@ -48,30 +48,22 @@ const Form = ({
     const handleInputValue = (e: ChangeEvent<HTMLInputElement>) => {
         const item = e.target.id
         const inputValue = +e.target.value
-        console.log(inputValue)
-       
         inputValue === 0
         ? setState({...state, [item]: ''})
         : setState({...state, [item]: inputValue})        
     }
 
-    const getCalcValues = (formTarget: HTMLFormElement): {formValue: {[key: string]: FormDataEntryValue}; subTotal: number} => {
-        const formData = new FormData(formTarget as HTMLFormElement)
-        const formValue = Object.fromEntries(formData.entries())
-        const subTotal = calcSubTotal(formValue)
-        
-        return { formValue, subTotal }
-    }
-
     const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault()
-        const calcValues = getCalcValues(e.target as HTMLFormElement)
-        onCalc(calcValues)
+        const { formValue } = getFormValueObject(e.target as HTMLFormElement)
+        const subTotal = calcSubTotal(formValue)
+        onCalc({formValue, subTotal})
         initForm()
     }
 
-    const calcSubTotal = (formData: {[key: string]: FormDataEntryValue}) => {
-        const subTotal = Object.values(formData).reduce((total, value) => total + (+value), 0)
+    const calcSubTotal = (formValue: FormValue) => {
+        const removeYearMonthFromFormValue: FormValue = exploitKeysFromData<FormValue>(formValue, ['year', 'month'])
+        const subTotal = Object.values(removeYearMonthFromFormValue).reduce((total: number, value) => total + (+value), 0)
         setSubTotal(subTotal)
         
         return subTotal
@@ -101,7 +93,11 @@ const Form = ({
                                     }
                                     return createElement(
                                         formItem[component] as  InputSelectComponent, 
-                                        {...componentRow.props, key: 'nested-' + j}
+                                        {
+                                            ...componentRow.props,
+                                            onChange: handleInputValue,
+                                            key: 'nested-' + j
+                                        }
                                     )
                                 }
                             })
@@ -124,7 +120,10 @@ const Form = ({
                 }
                 return createElement(
                     formItem[item.component] as InputSelectComponent, 
-                    {...item.props, key: i}
+                    {   ...item.props,
+                        onChange: handleInputValue,
+                        key: i
+                    }
                 )
             }
             return createElement(
@@ -149,7 +148,9 @@ const Form = ({
                         }
                     </div>
                 </div>
-                <SubmitButton>{type === 'expense' ? 'Calculate' : 'Add'}</SubmitButton>
+                <SubmitButton>
+                    {type === 'expense' ? 'Calculate' : 'Add'}
+                </SubmitButton>
             </form>
             <div>SubTotal: {subTotal}</div>
         </>
