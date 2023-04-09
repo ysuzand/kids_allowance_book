@@ -1,5 +1,10 @@
 import express from 'express'
-import controllers from './controllers/index.js'
+import {
+    getTotal,
+    updateTotal,
+    addSavingDetails,
+    findUser
+} from './controllers/index'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 const app = express()
@@ -14,7 +19,7 @@ app.use(cors({
 /**
  * AUTH
  */
-app.post('/api/login',controllers.findUser)
+app.post('/api/login', findUser)
 
 /**
  * API
@@ -24,9 +29,9 @@ app.post('/api/login',controllers.findUser)
  * Get your savings | GET | '/api/savings?uid=?'
  * Add your new total | PATCH | '/api/savings/:uid'
  */
-app.get('/api/savings/:uid', controllers.getTotal)
-app.patch('/api/savings/:uid', controllers.updateTotal)
-// app.put('/api/savings/add', controllers.addSavings)
+app.get('/api/savings/:uid', getTotal)
+app.put('/api/savings/add', addSavingDetails)
+app.patch('/api/savings/:uid', updateTotal)
 
 app.listen(port, () => {
     console.log(`Server is running on: ${port}`)

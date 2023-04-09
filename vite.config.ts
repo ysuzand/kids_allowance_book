@@ -6,11 +6,11 @@ import path from 'path'
 export default defineConfig({
   resolve:{
     alias:{
-      '@components': path.resolve(__dirname, './src/components'),
-      '@providers': path.resolve(__dirname, './src/providers'),
-      '@assets': path.resolve(__dirname, './src/assets'),
-      '@utils': path.resolve(__dirname, './src/utils'),
-      '@type': path.resolve(__dirname, './src/type')
+      '@components': path.resolve(__dirname, './src/client/components'),
+      '@providers': path.resolve(__dirname, './src/client/providers'),
+      '@assets': path.resolve(__dirname, './src/client/assets'),
+      '@utils': path.resolve(__dirname, './src/client/utils'),
+      '@type': path.resolve(__dirname, './src/client/type')
     },
   },
   plugins: [react()],

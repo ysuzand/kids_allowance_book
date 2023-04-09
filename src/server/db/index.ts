@@ -1,6 +1,6 @@
 import sqlite from 'sqlite3'
 const SQL = sqlite.verbose()
-const DBSOURCE = 'server/db/allowance.sqlite'
+const DBSOURCE = 'src/server/db/allowance.sqlite'
 const db = new SQL.Database(DBSOURCE)
 
 const CREATE_USERS_TABLE = `
@@ -17,16 +17,17 @@ CREATE TABLE IF NOT EXISTS savings (
     FOREIGN KEY(uid) REFERENCES users(uid)
 ) WITHOUT ROWID`
 
-const CREATE_SAVING_GROUP_TABLE = `
-CREATE TABLE IF NOT EXISTS saving_group (
-    uid integer FOREIGN KEY REFERENCES users(uid),
+const CREATE_SAVING_DETAIL_TABLE = `
+CREATE TABLE IF NOT EXISTS saving_detail (
+    uid integer PRIMARY KEY,
     year text,
     month text,
     fashion integer,
     food integer,
     hobby integer,
     school integer,
-    income interger
+    income interger,
+    FOREIGN KEY(uid) REFERENCES users(uid)
 ) WITHOUT ROWID`
 
 const INIT_USER = ` INSERT INTO users
@@ -35,12 +36,12 @@ const INIT_USER = ` INSERT INTO users
 const INIT_SAVINGS = `  INSERT INTO savings
                         (uid, total)
                         VALUES (?,?)`
-const INIT_GROUP = `INSERT INTO saving_group
-                    (year, month, fashion, food, hobby, school, income)
-                    VALUES (?,?,?,?,?,?,?)`
+const INIT_DETAIL = `INSERT INTO saving_detail
+                    (uid, year, month, fashion, food, hobby, school, income)
+                    VALUES (?,?,?,?,?,?,?,?)`
 
 db.serialize(() => {
-    // db.run(`DROP TABLE users`)
+    // db.run(`DROP TABLE saving_detail`)
 
     // db.run(CREATE_USERS_TABLE,
     // (err, rows) => {
@@ -64,14 +65,14 @@ db.serialize(() => {
     //     }
     // })
 
-    // db.run(CREATE_SAVING_GROUP_TABLE,
+    // db.run(CREATE_SAVING_DETAIL_TABLE,
     //     (err, rows) => {
     //         if (err) {
     //             console.log(err)
     //         } else {
     //             console.log('group table insert')
-    //             const stmt = db.prepare(INIT_GROUP)
-    //             stmt.run(['2023', '01', 100, 100, 0, 0])
+    //             const stmt = db.prepare(INIT_DETAIL)
+    //             // stmt.run(['2023', '01', 100, 100, 0, 0])
     //         }
     //     })
 })

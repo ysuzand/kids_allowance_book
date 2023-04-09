@@ -1,24 +1,31 @@
-import type { ChangeEvent, FormEvent } from 'react'
-import { useState, createElement, useMemo} from 'react'
-import { getFormValueObject, exploitKeysFromData } from '@utils/format'
+import type {
+    ChangeEvent,
+    FormEvent,
+    FunctionComponent
+} from 'react'
+import {
+    useState,
+    createElement
+} from 'react'
+import { 
+    getFormValueObject,
+    exploitKeysFromData
+} from '@utils/format'
 import Input from '@components/form/Input'
 import Select from '@components/form/Select'
 import SubmitButton from '@components/form/Submit'
 import { expenseFormMap, incomeFormMap } from '../../map/form'
 
-
-type InputComponent = ({ type, id, icon, color, width, placeholder, suffix, onChange, value }: InputProps) => JSX.Element
-type InputSelectComponent = ({ options, id, defaultValue }: InputSelectProps) => JSX.Element
 interface IFormItem {
     [key: string]: 
-        InputComponent
+        FunctionComponent<InputProps>
         |
-        InputSelectComponent
+        FunctionComponent<InputSelectProps>
 }
 
 const formItem: IFormItem = {
-    'Input': Input, 
-    'Select': Select
+    Input, 
+    Select
 }
 
 const initFormValues: {[key: string]: number | string} = {
@@ -82,7 +89,7 @@ const Form = ({
                                     const component = componentRow.component as string
                                     if (component === 'Input') {
                                         return createElement(
-                                            formItem[component] as InputComponent,
+                                            formItem[component] as FunctionComponent<InputProps>,
                                             {
                                                 ...componentRow.props,
                                                 value: state[componentRow.props.id],
@@ -92,7 +99,7 @@ const Form = ({
                                         )
                                     }
                                     return createElement(
-                                        formItem[component] as  InputSelectComponent, 
+                                        formItem[component] as FunctionComponent<InputSelectProps>, 
                                         {
                                             ...componentRow.props,
                                             onChange: handleInputValue,
@@ -109,7 +116,7 @@ const Form = ({
             else if (item.component && typeof formItem[item.component] !== 'undefined') {
                 if (item.component === 'Input') {             
                     return createElement(
-                        formItem[item.component] as InputComponent,
+                        formItem[item.component] as FunctionComponent<InputProps>,
                         {  
                             ...item.props,
                             value: state[item.props.id],
@@ -119,7 +126,7 @@ const Form = ({
                     )
                 }
                 return createElement(
-                    formItem[item.component] as InputSelectComponent, 
+                    formItem[item.component] as FunctionComponent<InputSelectProps>, 
                     {   ...item.props,
                         onChange: handleInputValue,
                         key: i
@@ -156,6 +163,5 @@ const Form = ({
         </>
     )
 }
-
 
 export default Form

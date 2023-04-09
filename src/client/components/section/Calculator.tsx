@@ -1,5 +1,12 @@
-import { useState, useEffect } from 'react'
-import { GetTotalDB, UpdateTotalDB } from '@utils/ajax'
+import {
+    useState,
+    useEffect
+} from 'react'
+import {
+    GetTotalAjax,
+    UpdateTotalAjax,
+    PutSavingsAjax
+} from '@utils/ajax'
 import { useUserInfo } from '@providers/UserProvider'
 import Form from '@components/form/Form'
 import Switch from '@components/Switch'
@@ -14,9 +21,12 @@ const Calculator = ({className}: {className: string}) => {
     const updateTotal = (calcValues: {formValue: {[key: string]: FormDataEntryValue}; subTotal: number}) => {
         const subTotal = calcValues.subTotal
         const updatedAmount = isExpense ? total - subTotal : total + subTotal
+        const formValues = calcValues.formValue
         setTotal(updatedAmount)
-        UpdateTotalDB({total: updatedAmount}, uid)
-        setInputData(calcValues.formValue) // DB instead.
+        PutSavingsAjax(formValues, uid)
+        // UpdateTotalAjax({total: updatedAmount}, uid)
+        console.log(formValues)
+        setInputData(calcValues.formValue) // Ajax instead.
     }
 
     const switchForm = (radioValue: string) => {
@@ -25,7 +35,7 @@ const Calculator = ({className}: {className: string}) => {
 
     useEffect(() => {
         if (uid !== 0) {
-            GetTotalDB(uid)
+            GetTotalAjax(uid)
             .then(res => { setTotal(res.data.data.total)})
         }
     },[uid])
@@ -34,7 +44,7 @@ const Calculator = ({className}: {className: string}) => {
         <div className={`${className}`}>
             <div className='flex justify-center items-end'>
                 <img src='/assets/bank.svg' alt='bank' width='64' height='64' />
-                <div className='text-4xl'>{ total }</div>
+                <div className='text-7xl'>{ total }</div>
             </div>
             <Switch onChange={switchForm}/>
             <hr className='mb-4' />

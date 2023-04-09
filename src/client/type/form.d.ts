@@ -44,4 +44,12 @@ interface SubmitButtonProps {
     disabled?: boolean;
 }
 
-interface 
+interface FormData {
+    year: string;
+    month: string;
+    fashion: number;
+    food: number;
+    hobby: number;
+    school: number;
+    income: number;
+}

@@ -9,7 +9,7 @@ import IconButton from '@components/Icon'
 import './App.css'
 
 const App = (): ReactElement => {
-  const [ui, setUi] = useState(UI.LOGIN)
+  const [ui, setUi] = useState(UI.CALC)
   const [isAuth, setIsAuth] = useState(false)
   const changeUi = () => {
     const updateUI = ui === UI.CALC ? UI.GRAPH : UI.CALC
@@ -26,9 +26,10 @@ const App = (): ReactElement => {
     }
   }
   return (
-      <div className='flex flex-col'>
+      <div className='flex flex-col max-w-lg mx-auto'>
         { 
-        ui !== UI.LOGIN && isAuth
+        // ui !== UI.LOGIN && isAuth
+        true
           ? <UserInfoProvider>
               <button
                 onClick={changeUi}
@@ -41,7 +42,6 @@ const App = (): ReactElement => {
             </UserInfoProvider>
           : <Login onAuth={checkAuth}/>
         }
-        
       </div>
   )
 }
