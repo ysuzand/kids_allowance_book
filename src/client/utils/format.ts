@@ -19,3 +19,21 @@ export const exploitKeysFromData = <T extends object>(data: T, removeKeys: strin
 
     return updatedFormValues as T
 }
+
+export const formatFormValues = <R>(formValues:{ [key: string]: FormDataEntryValue }, type: 'expense'|'income'): R => {
+    const yearmonth = `${formValues.year}-${formValues.month}`
+    const values = type === 'expense'
+    ? {
+        food: formValues.food,
+        fashion: formValues.fasion,
+        school: formValues.school,
+        hobby: formValues.hobby,
+        yearmonth
+    }
+    : {
+        income: formValues.income,
+        yearmonth
+    }
+
+    return values as R
+}

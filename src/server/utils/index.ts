@@ -1,15 +1,15 @@
-import db from '../db/'
+import db from '../db'
 
-const checkSavingMonthExist = (uid: number, year: string, month: string) => {
+const checkSavingMonthExist = (uid: number, yearmonth: string) => {
     let isNewRow = true
     let row = null
     const getSavingSql = `
         SELECT *
-        FROM saving_detail
+        FROM expense_details
         WHERE uid = ?
         AND year = ?
         AND month = ?`
-    const getSavingParams = [uid, year, month]
+    const getSavingParams = [uid, yearmonth]
     db.get(getSavingSql, getSavingParams, (err, row) => {
         if (err) {
             isNewRow = false

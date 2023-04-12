@@ -7,7 +7,8 @@ const CREATE_USERS_TABLE = `
 CREATE TABLE IF NOT EXISTS users (
     uid INTEGER PRIMARY KEY AUTOINCREMENT,
     name text,
-    password text
+    password text,
+    UNIQUE(name, password)
 )`
 
 const CREATE_SAVINGS_TABLE = `
@@ -17,18 +18,26 @@ CREATE TABLE IF NOT EXISTS savings (
     FOREIGN KEY(uid) REFERENCES users(uid)
 ) WITHOUT ROWID`
 
-const CREATE_SAVING_DETAIL_TABLE = `
-CREATE TABLE IF NOT EXISTS saving_detail (
-    uid integer PRIMARY KEY,
-    year text,
-    month text,
+const CREATE_EXPENSE_DETAIL_TABLE = `
+CREATE TABLE IF NOT EXISTS expense_details (
+    uid integer,
+    yearmonth text PRIMARY KEY,
     fashion integer,
     food integer,
     hobby integer,
     school integer,
-    income interger,
     FOREIGN KEY(uid) REFERENCES users(uid)
-) WITHOUT ROWID`
+)`
+
+const CREATE_INCOME_DETAIL_TABLE = `
+CREATE TABLE IF NOT EXISTS income_details (
+    uid interger,
+    yearmonth text PRIMARY KEY,
+    income integer,
+    memo text,
+    FOREIGN KEY(uid) REFERENCES users(uid)
+) WITHOUT ROWID
+`
 
 const INIT_USER = ` INSERT INTO users
                     (name, password)
@@ -36,21 +45,25 @@ const INIT_USER = ` INSERT INTO users
 const INIT_SAVINGS = `  INSERT INTO savings
                         (uid, total)
                         VALUES (?,?)`
-const INIT_DETAIL = `INSERT INTO saving_detail
-                    (uid, year, month, fashion, food, hobby, school, income)
-                    VALUES (?,?,?,?,?,?,?,?)`
+const INIT_EXPENSES = `INSERT INTO expense_details
+                    (uid, yearmonth, fashion, food, hobby, school)
+                    VALUES (?,?,?,?,?,?)`
+const INIT_INCOME = `INSERT INTO income_details
+                    (uid, yearmonth, income, memo)
+                    VALUES (?,?,?,?)`
 
 db.serialize(() => {
-    // db.run(`DROP TABLE saving_detail`)
+    // db.run(`DROP TABLE expense_details`)
 
     // db.run(CREATE_USERS_TABLE,
+    //     //@ts-ignore
     // (err, rows) => {
     //     if (err) {
     //         console.log(err)
     //     } else {
     //         console.log('savings table insert')
     //         const stmt = db.prepare(INIT_USER)
-    //         // stmt.run(['star', 'mypass'])
+    //         // stmt.run(['tree', 'hello'])
     //     }
     // })
 
@@ -65,14 +78,26 @@ db.serialize(() => {
     //     }
     // })
 
-    // db.run(CREATE_SAVING_DETAIL_TABLE,
+    // db.run(CREATE_EXPENSE_DETAIL_TABLE,
+    //     //@ts-ignore
     //     (err, rows) => {
     //         if (err) {
     //             console.log(err)
     //         } else {
-    //             console.log('group table insert')
-    //             const stmt = db.prepare(INIT_DETAIL)
-    //             // stmt.run(['2023', '01', 100, 100, 0, 0])
+    //             console.log('expense_details table insert')
+    //             const stmt = db.prepare(INIT_EXPENSES)
+    //             // stmt.run([1, '2023'-1', 100, 100, 0, 0])
+    //         }
+    //     })
+    // db.run(CREATE_INCOME_DETAIL_TABLE,
+    //     //@ts-ignore
+    //     (err, rows) => {
+    //         if (err) {
+    //             console.log(err)
+    //         } else {
+    //             console.log('income_details table insert')
+    //             const stmt = db.prepare(INIT_INCOME)
+    //             // stmt.run([1, '2023'-1', 100, 'my monthly allowance'])
     //         }
     //     })
 })

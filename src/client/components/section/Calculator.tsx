@@ -5,11 +5,14 @@ import {
 import {
     GetTotalAjax,
     UpdateTotalAjax,
-    PutSavingsAjax
+    AddExpenseAjax,
+    AddIncomeAjax
 } from '@utils/ajax'
 import { useUserInfo } from '@providers/UserProvider'
 import Form from '@components/form/Form'
 import Switch from '@components/Switch'
+import TotalSavings from '@components/TotalSavings'
+import { formatFormValues } from '@utils/format'
 
 const Calculator = ({className}: {className: string}) => {
     const [total, setTotal] = useState(0)
@@ -18,14 +21,19 @@ const Calculator = ({className}: {className: string}) => {
     const isExpense = formType === 'expense'
     const { uid } = useUserInfo()
 
-    const updateTotal = (calcValues: {formValue: {[key: string]: FormDataEntryValue}; subTotal: number}) => {
+    const updateTotal = <R,>(calcValues: {formValue: FormValue; subTotal: number}) => {
         const subTotal = calcValues.subTotal
         const updatedAmount = isExpense ? total - subTotal : total + subTotal
         const formValues = calcValues.formValue
         setTotal(updatedAmount)
-        PutSavingsAjax(formValues, uid)
+        //@ts-ignore @TODO: type check.
+        console.log(formatFormValues(formValues, formType))
+        // formatFormValues<R>(formValues, type)
+        //@ts-ignore @TODO: type check.
+        // formType === 'expense' ? AddExpenseAjax(formValues, uid) : AddIncomeAjax(formValues, uid)
+        
+        
         // UpdateTotalAjax({total: updatedAmount}, uid)
-        console.log(formValues)
         setInputData(calcValues.formValue) // Ajax instead.
     }
 
@@ -42,10 +50,7 @@ const Calculator = ({className}: {className: string}) => {
 
     return (
         <div className={`${className}`}>
-            <div className='flex justify-center items-end'>
-                <img src='/assets/bank.svg' alt='bank' width='64' height='64' />
-                <div className='text-7xl'>{ total }</div>
-            </div>
+            <TotalSavings total={total}/>
             <Switch onChange={switchForm}/>
             <hr className='mb-4' />
             <Form onCalc={updateTotal} type={formType}/>

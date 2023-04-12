@@ -16,8 +16,12 @@ export const UpdateTotalAjax = (data: UpdateTotalData, uid: number) => {
     AxiosInstance.patch(`/savings/${uid}`, data)
 }
 
-export const PutSavingsAjax = (data:  {[key: string]: FormDataEntryValue}, uid: number) => {
-    AxiosInstance.put(`/savings/add`, {...data, uid})
+export const AddExpenseAjax = (data: ExpenseInputData, uid: number) => {
+    AxiosInstance.put(`/savings/${uid}/expenses`, {...data, uid})
+}
+
+export const AddIncomeAjax = (data: IncomeInputData, uid: number) => {
+    AxiosInstance.put(`/savings/${uid}/income`, {...data, uid})
 }
 
 // @TODO: Extra check with password or token.

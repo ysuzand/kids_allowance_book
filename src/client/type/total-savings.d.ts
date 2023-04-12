@@ -1,0 +1,3 @@
+interface TotalSavingsProps {
+    total: number;
+}

@@ -1,6 +1,8 @@
-interface FormValue {
-    [key: string]: FormDataEntryValue
-}
+type FormValue = 
+{ [key: string]: FormDataEntryValue} 
+| FormExpenseData | FormIncomeData
+
+// type FormValue = 
 
 interface FormItem {
     component?: string;
@@ -44,12 +46,17 @@ interface SubmitButtonProps {
     disabled?: boolean;
 }
 
-interface FormData {
+type FormExpenseData = {
     year: string;
     month: string;
     fashion: number;
     food: number;
     hobby: number;
     school: number;
+}
+
+type FormIncomeData = {
+    year: string;
+    month: string;
     income: number;
 }
