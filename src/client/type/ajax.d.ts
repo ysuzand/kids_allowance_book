@@ -4,7 +4,7 @@ interface UpdateTotalData {
 
 type IncomeInputData = Pick<FormIncomeData, 'income'> & {yearmonth: string}
 
-type ExpenseInputData = Omit<FormExpenseData, 'year'|'month'> & {yearmonth: string}
+type ExpenseInputData = FormExpenseData & {yearmonth: string}
 
 interface CheckAuthData {
     uid: number;

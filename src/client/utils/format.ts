@@ -1,8 +1,15 @@
 export const getFormValueObject = (formTarget: HTMLFormElement) => {
     const formData = new FormData(formTarget as HTMLFormElement)
-    const formValue = Object.fromEntries(formData.entries())
-
-    return { formValue }
+    // const formValue = Object.fromEntries(formData.entries()) // This method does not work well with TS.
+    let returnData = {}
+    for(const [key, value] of formData) {
+        returnData = {
+            ...returnData,
+        [key]: value
+        }
+    }
+    
+    return { formValue: returnData }
 }
 
 export const exploitKeysFromData = <T extends object>(data: T, removeKeys: string[]): T => {
@@ -20,20 +27,15 @@ export const exploitKeysFromData = <T extends object>(data: T, removeKeys: strin
     return updatedFormValues as T
 }
 
-export const formatFormValues = <R>(formValues:{ [key: string]: FormDataEntryValue }, type: 'expense'|'income'): R => {
+export const formatFormValuesForSchema = <R>(formValues:FormValue): R => {
     const yearmonth = `${formValues.year}-${formValues.month}`
-    const values = type === 'expense'
-    ? {
-        food: formValues.food,
-        fashion: formValues.fasion,
-        school: formValues.school,
-        hobby: formValues.hobby,
-        yearmonth
-    }
-    : {
-        income: formValues.income,
-        yearmonth
-    }
+    let returnFormValues = {yearmonth}
+        for(const [key, value] of Object.entries(formValues)) {
+            returnFormValues = {
+                ...returnFormValues,
+                [key]: value
+            }
+        }
 
-    return values as R
+    return returnFormValues as R
 }

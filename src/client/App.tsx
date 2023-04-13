@@ -1,5 +1,5 @@
-import type { ReactElement } from 'react'
-import { useState } from 'react'
+import type { ReactElement, FunctionComponent } from 'react'
+import { useState , createElement } from 'react'
 import { UI } from '@type/enums'
 import UserInfoProvider from '@providers/UserProvider'
 import Login from '@components/section/Login'
@@ -8,6 +8,13 @@ import Graph from '@components/section/Graph'
 import IconButton from '@components/Icon'
 import './App.css'
 
+interface SectionMap {
+  [key: string]: () => JSX.Element
+}
+const sectionMap: SectionMap = {
+  [UI.CALC]: Calculator,
+  [UI.GRAPH]: Graph,
+}
 const App = (): ReactElement => {
   const [ui, setUi] = useState(UI.LOGIN)
   const [isAuth, setIsAuth] = useState(false)
@@ -34,10 +41,16 @@ const App = (): ReactElement => {
                 onClick={changeUi}
                 className='bg-transparent w-fit'
               >
-                <IconButton color='bg-white' iconSrc={`/assets/${ui === UI.CALC ? 'graph' : 'bank'}.svg`} />
+                <IconButton
+                  color='bg-white'
+                  iconSrc={`/assets/${ui === UI.CALC ? 'graph' : 'bank'}.svg`}
+                  alt={ui === UI.CALC ? 'Open a graph page to see your savings' : 'Back to income/expense registration page'}
+                />
               </button>
-              {ui === UI.CALC ? <Calculator className=''/> : null }
-              {ui === UI.GRAPH ? <Graph className=''/> : null }
+              {
+                (ui in sectionMap) && createElement(sectionMap[ui])
+              }
+              
             </UserInfoProvider>
           : <Login onAuth={checkAuth}/>
         }

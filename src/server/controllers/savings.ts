@@ -1,4 +1,4 @@
-import type { Request, Response, NextFunction } from 'express'
+import type { Request, Response } from 'express'
 import type { RunResult } from 'sqlite3'
 import db from '../db'
 
@@ -37,10 +37,10 @@ export const addIncome = (req: Request, res: Response) => {
     // Check if the user already added income in the same year-month
     const {isNewRow, row} = checkSavingMonthExist(+uid, yearmonth)
     const params = [+uid, yearmonth, +income]
-    //@TODO: Create income table
+    //@TODO: Add to db
 }
 
-export const addExpenses = (req: Request, res: Response, next: NextFunction) => {
+export const addExpenses = (req: Request, res: Response) => {
     const { uid, yearmonth, fashion, food, hobby, school } = req.body
     const userFilled = checkFieldFulfilled({fashion, food, hobby, school})
     if (!userFilled) {

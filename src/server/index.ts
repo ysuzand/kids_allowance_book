@@ -26,11 +26,6 @@ app.post('/api/login', findUser)
 
 /**
  * API
- * -----------------------------
- * :OPERATION: | :METHOD: | :PATH:
- * -----------------------------
- * Get your savings | GET | '/api/savings?uid=?'
- * Add your new total | PATCH | '/api/savings/:uid'
  */
 app.get('/api/savings/:uid', getTotal)
 app.put('/api/savings/:uid/expenses', addExpenses)

@@ -12,9 +12,9 @@ import { useUserInfo } from '@providers/UserProvider'
 import Form from '@components/form/Form'
 import Switch from '@components/Switch'
 import TotalSavings from '@components/TotalSavings'
-import { formatFormValues } from '@utils/format'
+import { formatFormValuesForSchema } from '@utils/format'
 
-const Calculator = ({className}: {className: string}) => {
+const Calculator = () => {
     const [total, setTotal] = useState(0)
     const [formType, setFormType] = useState('expense')
     const [inputData, setInputData] = useState({})
@@ -26,13 +26,11 @@ const Calculator = ({className}: {className: string}) => {
         const updatedAmount = isExpense ? total - subTotal : total + subTotal
         const formValues = calcValues.formValue
         setTotal(updatedAmount)
-        //@ts-ignore @TODO: type check.
-        console.log(formatFormValues(formValues, formType))
-        // formatFormValues<R>(formValues, type)
-        //@ts-ignore @TODO: type check.
+        
+        console.log(formatFormValuesForSchema(formValues))
+        formatFormValuesForSchema<IncomeInputData|ExpenseInputData>(formValues)
+        //@ts-ignore @TODO: type check & backend implementation
         // formType === 'expense' ? AddExpenseAjax(formValues, uid) : AddIncomeAjax(formValues, uid)
-        
-        
         // UpdateTotalAjax({total: updatedAmount}, uid)
         setInputData(calcValues.formValue) // Ajax instead.
     }
@@ -49,7 +47,7 @@ const Calculator = ({className}: {className: string}) => {
     },[uid])
 
     return (
-        <div className={`${className}`}>
+        <div>
             <TotalSavings total={total}/>
             <Switch onChange={switchForm}/>
             <hr className='mb-4' />

@@ -111,9 +111,9 @@ export const data = {
 };
 
 
-const Graph = ({className}: {className: string}) => {
+const Graph = () => {
     return (
-        <div className={`${className}`}>
+        <div>
              <Chart type='bar' data={data} id='allowanceGraph' options={options} />
         </div>
     )

@@ -22,7 +22,11 @@ const Login = ({
             <h1>Click your user name to login</h1>
             <div className='my-8 flex justify-center'>
                 <button onClick={() => handleLogin(1)} className='flex flex-col w-fit'>
-                    <IconButton color='bg-sky-500' iconSrc='/assets/user-icons/star.svg'/>
+                    <IconButton
+                        color='bg-sky-500'
+                        iconSrc='/assets/user-icons/star.svg'
+                        alt='login'
+                    />
                     <div className='w-full'>Star</div>
                 </button>
             </div>

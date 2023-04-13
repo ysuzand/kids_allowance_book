@@ -1,8 +1,6 @@
-type FormValue = 
-{ [key: string]: FormDataEntryValue} 
-| FormExpenseData | FormIncomeData
+type FormValue = FormExpenseData | FormIncomeData
+// { [key: string]: FormDataEntryValue} 
 
-// type FormValue = 
 
 interface FormItem {
     component?: string;
