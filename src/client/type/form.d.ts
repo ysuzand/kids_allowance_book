@@ -57,4 +57,9 @@ type FormIncomeData = {
     year: string;
     month: string;
     income: number;
+    memo: string;
 }
+
+type ReturnFormValue = {
+    yearmonth: string;
+} & (FormExpenseData | FormIncomeData);

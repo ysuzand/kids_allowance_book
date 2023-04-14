@@ -16,7 +16,7 @@ const sectionMap: SectionMap = {
   [UI.GRAPH]: Graph,
 }
 const App = (): ReactElement => {
-  const [ui, setUi] = useState(UI.LOGIN)
+  const [ui, setUi] = useState(UI.CALC)
   const [isAuth, setIsAuth] = useState(false)
   const changeUi = () => {
     const updateUI = ui === UI.CALC ? UI.GRAPH : UI.CALC
@@ -35,7 +35,8 @@ const App = (): ReactElement => {
   return (
       <div className='flex flex-col'>
         { 
-        ui !== UI.LOGIN && isAuth
+        // ui !== UI.LOGIN && isAuth
+        true
           ? <UserInfoProvider>
               <button
                 onClick={changeUi}

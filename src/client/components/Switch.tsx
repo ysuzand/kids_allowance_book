@@ -10,10 +10,10 @@ const Switch = ({
         onChange(e.target.value)
     }
     return (
-        <form className='relative w-64 mx-auto mb-4'>
-            <div className={`h-12 w-32 bg-orange-500 border-4 border-black transition-transform rounded-full ${selected === 'expense' ? 'translate-x-32' : 'translate-x-0'}`}></div>
+        <form className='relative w-80 mx-auto mb-4'>
+            <div className={`h-12 w-40 bg-orange-500 border-4 border-black transition-transform rounded-full ${selected === 'expense' ? 'translate-x-40' : 'translate-x-0'}`}></div>
             <div className='flex flex-row absolute top-0'>
-                <label className='flex justify-center items-center h-12 w-32'>
+                <label className='flex justify-center items-center h-12 w-40 text-xl'>
                     <input
                         type='radio'
                         name='switch'
@@ -24,7 +24,7 @@ const Switch = ({
                     />
                     <span>Income</span>
                 </label>
-                <label className='flex justify-center items-center h-12 w-32'>
+                <label className='flex justify-center items-center h-12 w-40 text-xl'>
                     <input
                         type='radio'
                         name='switch'

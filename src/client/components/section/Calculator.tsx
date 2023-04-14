@@ -21,18 +21,18 @@ const Calculator = () => {
     const isExpense = formType === 'expense'
     const { uid } = useUserInfo()
 
-    const updateTotal = <R,>(calcValues: {formValue: FormValue; subTotal: number}) => {
-        const subTotal = calcValues.subTotal
+    const updateTotal = (calcValues: {formValue: FormValue; subTotal: number}) => {
+        const { subTotal } = calcValues
         const updatedAmount = isExpense ? total - subTotal : total + subTotal
         const formValues = calcValues.formValue
         setTotal(updatedAmount)
         
-        console.log(formatFormValuesForSchema(formValues))
-        formatFormValuesForSchema<IncomeInputData|ExpenseInputData>(formValues)
+        const readyData = formatFormValuesForSchema(formValues)
+        console.log(readyData)
         //@ts-ignore @TODO: type check & backend implementation
-        // formType === 'expense' ? AddExpenseAjax(formValues, uid) : AddIncomeAjax(formValues, uid)
+        // formType === 'expense' ? AddExpenseAjax(readyData, uid) : AddIncomeAjax(readyData, uid)
         // UpdateTotalAjax({total: updatedAmount}, uid)
-        setInputData(calcValues.formValue) // Ajax instead.
+        // setInputData(calcValues.formValue) // Ajax instead.
     }
 
     const switchForm = (radioValue: string) => {

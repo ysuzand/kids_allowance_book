@@ -9,7 +9,7 @@ import {
 } from 'react'
 import { 
     getFormValueObject,
-    exploitKeysFromData
+    extractKeysFromData
 } from '@utils/format'
 import Input from '@components/form/Input'
 import Select from '@components/form/Select'
@@ -35,7 +35,8 @@ const initFormValues: {[key: string]: number | string} = {
     'fashion': '',
     'income': '',
     'year': '',
-    'month': ''
+    'month': '',
+    'memo': ''
 }
 
 const Form = ({
@@ -54,8 +55,8 @@ const Form = ({
 
     const handleInputValue = (e: ChangeEvent<HTMLInputElement>) => {
         const item = e.target.id
-        const inputValue = +e.target.value
-        inputValue === 0
+        const inputValue = e.target.value
+        typeof inputValue === 'number' && inputValue === 0
         ? setState({...state, [item]: ''})
         : setState({...state, [item]: inputValue})        
     }
@@ -69,8 +70,8 @@ const Form = ({
     }
 
     const calcSubTotal = (formValue: FormValue) => {
-        const removeYearMonthFromFormValue: FormValue = exploitKeysFromData<FormValue>(formValue, ['year', 'month'])
-        const subTotal = Object.values(removeYearMonthFromFormValue).reduce((total: number, value) => total + (+value), 0)
+        const removeTextFields: FormValue = extractKeysFromData<FormValue>(formValue, ['year', 'month', 'memo'])
+        const subTotal = Object.values(removeTextFields).reduce((total: number, value) => total + (+value), 0)
         setSubTotal(subTotal)
         
         return subTotal

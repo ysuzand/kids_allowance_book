@@ -5,6 +5,18 @@ export const expenseFormMap: (FormItem & FormItemAsMultiElement)[] = [
             {
                 component: 'Select',
                 props: {
+                    id: 'year',
+                    width: 'sm',
+                    options: [
+                        { value: '2022', label: '2022' },
+                        { value: '2023', label: '2023' },
+                    ],
+                    defaultValue: new Date().getFullYear()
+                }
+            },
+            {
+                component: 'Select',
+                props: {
                     id: 'month',
                     width: 'sm',
                     options: [
@@ -22,18 +34,6 @@ export const expenseFormMap: (FormItem & FormItemAsMultiElement)[] = [
                         { value: '12', label: 'Dec'},
                     ],
                     defaultValue: new Date().getMonth() + 1
-                }
-            },
-            {
-                component: 'Select',
-                props: {
-                    id: 'year',
-                    width: 'sm',
-                    options: [
-                        { value: '2022', label: '2022' },
-                        { value: '2023', label: '2023' },
-                    ],
-                    defaultValue: new Date().getFullYear()
                 }
             }
         ],
@@ -90,6 +90,18 @@ export const incomeFormMap: (FormItem & FormItemAsMultiElement)[] = [
             {
                 component: 'Select',
                 props: {
+                    id: 'year',
+                    width: 'sm',
+                    options: [
+                        { value: '2022', label: '2022' },
+                        { value: '2023', label: '2023' },
+                    ],
+                    defaultValue: new Date().getFullYear()
+                }
+            },
+            {
+                component: 'Select',
+                props: {
                     id: 'month',
                     width: 'sm',
                     options: [
@@ -108,18 +120,6 @@ export const incomeFormMap: (FormItem & FormItemAsMultiElement)[] = [
                     ],
                     defaultValue: new Date().getMonth() + 1
                 }
-            },
-            {
-                component: 'Select',
-                props: {
-                    id: 'year',
-                    width: 'sm',
-                    options: [
-                        { value: '2022', label: '2022' },
-                        { value: '2023', label: '2023' },
-                    ],
-                    defaultValue: new Date().getFullYear()
-                }
             }
         ],
     },
@@ -134,6 +134,17 @@ export const incomeFormMap: (FormItem & FormItemAsMultiElement)[] = [
             type: 'number',
             color: 'bg-amber-500',
             icon: '/assets/coins.svg'
+        }
+    },
+    {
+        component: 'Input',
+        props: {
+            id: 'memo',
+            type: 'text',
+            color: 'bg-purple-400',
+            placeholder: 'Memo',
+            suffix: '',
+            icon: '/assets/memo.svg'
         }
     }
 ]

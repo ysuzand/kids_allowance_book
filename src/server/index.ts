@@ -25,7 +25,7 @@ app.use(cors({
 app.post('/api/login', findUser)
 
 /**
- * API
+ * CRUD API
  */
 app.get('/api/savings/:uid', getTotal)
 app.put('/api/savings/:uid/expenses', addExpenses)

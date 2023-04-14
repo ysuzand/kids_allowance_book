@@ -1,11 +1,11 @@
 # Kids Allowance Book
 (WIP)
 ## Purpose of this hobby project
-_As a parent of kids, it's been getting harder to keep an eye on, or to control their monthly allowance savings while cash is less and less common in Sweden. It is a little bit too much to give them a real credit card, or money transfering system like Swish. Instead, I just needed a small application that could help me to see how much money they have spent and therefore how much left, etc. It is just like a small biggy bank in digital._
+_As a parent of kids, it's been getting harder to keep an eye on, or to control their monthly allowance savings while cash is less and less common in Sweden. It could be too much to give them a real credit card, or to let them use a transaction app such as Swish. Instead, I just needed a small application that could help me to see how much money they have spent and how much left, etc. It is just like a small digital biggy bank._
 
 _I try to make this app kids friendly and also give it a mobile-app-like feeling._
 
-_I build this app also for a sake of my learning. :)_
+_I build this app also for the sake of my learning. :)_
 
 ---
 

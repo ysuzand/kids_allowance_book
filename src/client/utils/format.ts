@@ -1,7 +1,7 @@
 export const getFormValueObject = (formTarget: HTMLFormElement) => {
     const formData = new FormData(formTarget as HTMLFormElement)
-    // const formValue = Object.fromEntries(formData.entries()) // This method does not work well with TS.
-    let returnData = {}
+    let returnData = <FormValue>{}
+
     for(const [key, value] of formData) {
         returnData = {
             ...returnData,
@@ -12,7 +12,7 @@ export const getFormValueObject = (formTarget: HTMLFormElement) => {
     return { formValue: returnData }
 }
 
-export const exploitKeysFromData = <T extends object>(data: T, removeKeys: string[]): T => {
+export const extractKeysFromData = <T extends object>(data: T, removeKeys: string[]): T => {
     let updatedFormValues = {}
    
     for (const [key, value] of Object.entries(data)) {
@@ -27,15 +27,30 @@ export const exploitKeysFromData = <T extends object>(data: T, removeKeys: strin
     return updatedFormValues as T
 }
 
-export const formatFormValuesForSchema = <R>(formValues:FormValue): R => {
-    const yearmonth = `${formValues.year}-${formValues.month}`
-    let returnFormValues = {yearmonth}
-        for(const [key, value] of Object.entries(formValues)) {
-            returnFormValues = {
-                ...returnFormValues,
-                [key]: value
-            }
-        }
+type FormatValuesForSchema = (formValues: FormValue) => ReturnFormValue;
 
-    return returnFormValues as R
+export const formatFormValuesForSchema: FormatValuesForSchema = formValues => {
+    const yearmonth = `${formValues.year}-${formValues.month}`
+    return {...getObject<FormValue>(formValues), yearmonth}
+
+    //     for(const [key, value] of Object.entries(formValues)) {
+    //         returnFormValues = {
+    //             ...returnFormValues,
+    //             [key]: value
+    //         }
+    //     }
+
+    // return returnFormValues as R
+}
+
+const getObject = <R extends object>(originalObject: R): R=> {
+    let returnObject = <R>{}
+    for(const [key, value] of Object.entries(originalObject)) {
+        returnObject = {
+            ...returnObject,
+            [key]: value
+        }
+    }
+
+    return returnObject
 }

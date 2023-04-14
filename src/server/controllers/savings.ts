@@ -26,7 +26,7 @@ export const getTotal = (req: Request, res: Response) => {
 }
 
 export const addIncome = (req: Request, res: Response) => {
-    const { uid, yearmonth, income } = req.body
+    const { uid, yearmonth, year, month, income, memo } = req.body
     if (!income) {
         res.status(400).json({
             success: false,
@@ -36,8 +36,15 @@ export const addIncome = (req: Request, res: Response) => {
     }
     // Check if the user already added income in the same year-month
     const {isNewRow, row} = checkSavingMonthExist(+uid, yearmonth)
-    const params = [+uid, yearmonth, +income]
+    const params = [+uid, yearmonth, year, month, +income, memo]
     //@TODO: Add to db
+    if (isNewRow) {
+        const sql = `
+        INSERT INTO income_details
+        VALUES (?,?,?,?,?,?,?,?)
+        `
+        db.run(sql, params)
+    }
 }
 
 export const addExpenses = (req: Request, res: Response) => {
@@ -59,7 +66,7 @@ export const addExpenses = (req: Request, res: Response) => {
         
         const sql = `
             INSERT INTO expense_details
-            VALUES (?,?,?,?,?,?)
+            VALUES (?,?,?,?,?,?,?,?)
         `
         db.run(sql, params, (err: Error | null) => {
             if (err) {
