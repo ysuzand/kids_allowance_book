@@ -35,15 +35,19 @@ export const addIncome = (req: Request, res: Response) => {
         return
     }
     // Check if the user already added income in the same year-month
-    const {isNewRow, row} = checkSavingMonthExist(+uid, yearmonth)
+    const {isNewRecord, existingRecord} = checkSavingMonthExist(+uid, yearmonth)
     const params = [+uid, yearmonth, year, month, +income, memo]
     //@TODO: Add to db
-    if (isNewRow) {
+    if (isNewRecord) {
         const sql = `
         INSERT INTO income_details
         VALUES (?,?,?,?,?,?,?,?)
         `
         db.run(sql, params)
+        console.log("TODO: add to db")
+    }
+    else {
+        console.log("TODO: add to db")
     }
 }
 
@@ -59,11 +63,10 @@ export const addExpenses = (req: Request, res: Response) => {
     }
 
     // Check if there are more savings in the same year&month
-    const {isNewRow, row} = checkSavingMonthExist(+uid, yearmonth)
+    const {isNewRecord, existingRecord} = checkSavingMonthExist(+uid, yearmonth)
     const params:(string|number)[] = [+uid, yearmonth, +fashion, +food, +hobby, +school]
     // If not, save it
-    if (isNewRow && row === null) {
-        
+    if (isNewRecord && existingRecord === null) {
         const sql = `
             INSERT INTO expense_details
             VALUES (?,?,?,?,?,?,?,?)
@@ -84,7 +87,7 @@ export const addExpenses = (req: Request, res: Response) => {
     }
     // Else sum up the saving values
     else {
-        console.log(row)
+        console.log(existingRecord)
     }
 
     // Move to total update.

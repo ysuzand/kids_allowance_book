@@ -28,7 +28,7 @@ const Calculator = () => {
         setTotal(updatedAmount)
         
         const readyData = formatFormValuesForSchema(formValues)
-        console.log(readyData)
+        console.log('ready to add Data', readyData)
         //@ts-ignore @TODO: type check & backend implementation
         // formType === 'expense' ? AddExpenseAjax(readyData, uid) : AddIncomeAjax(readyData, uid)
         // UpdateTotalAjax({total: updatedAmount}, uid)

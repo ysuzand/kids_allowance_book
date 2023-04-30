@@ -1,23 +1,22 @@
 import db from '../db'
 
 const checkSavingMonthExist = (uid: number, yearmonth: string) => {
-    let isNewRow = true
-    let row = null
+    let isNewRecord = true
+    let existingRecord = null
     const getSavingSql = `
         SELECT *
         FROM expense_details
-        WHERE uid = ?
-        AND year = ?
-        AND month = ?`
+        WHERE uid = ? AND yearmonth = ?
+    `
     const getSavingParams = [uid, yearmonth]
     db.get(getSavingSql, getSavingParams, (err, row) => {
         if (err) {
-            isNewRow = false
+            isNewRecord = false
         } else {
-            row = row
+            existingRecord = row
         }
     })
-    return { isNewRow, row }
+    return { isNewRecord, existingRecord }
 }
 
 // Loop form values object to find any of user filled field.

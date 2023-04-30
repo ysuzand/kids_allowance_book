@@ -18,6 +18,8 @@ export const UpdateTotalAjax = (data: UpdateTotalData, uid: number) => {
 
 export const AddExpenseAjax = (data: ExpenseInputData, uid: number) => {
     AxiosInstance.put(`/savings/${uid}/expenses`, {...data, uid})
+    .then(res => console.info(res))
+    .catch(e => console.error(e))
 }
 
 export const AddIncomeAjax = (data: IncomeInputData, uid: number) => {
