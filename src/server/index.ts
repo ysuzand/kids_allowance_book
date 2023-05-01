@@ -3,7 +3,11 @@ import {
     getTotal,
     updateTotal,
     addExpenses,
-    addIncome
+    addIncome,
+    checkThisMonthExpenses,
+    checkThisMonthIncome,
+    updateExpenses,
+    updateIncpme
 } from './controllers/savings'
 import {
     findUser
@@ -28,8 +32,12 @@ app.post('/api/login', findUser)
  * CRUD API
  */
 app.get('/api/savings/:uid', getTotal)
+app.get('/api/savings/:uid/expenses/:yearmonth', checkThisMonthExpenses)
+app.get('/api/savings/:uid/income/:yearmonth', checkThisMonthIncome)
 app.put('/api/savings/:uid/expenses', addExpenses)
 app.put('/api/savings/:uid/income', addIncome)
+app.patch('/api/savings/:uid/expenses', updateExpenses) //@TODO
+app.patch('/api/savings/:uid/income', updateIncpme) //@TODO
 app.patch('/api/savings/:uid', updateTotal)
 
 app.listen(port, () => {

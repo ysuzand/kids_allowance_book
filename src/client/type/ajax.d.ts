@@ -2,9 +2,9 @@ interface UpdateTotalData {
     total: number;
 }
 
-type IncomeInputData = Pick<FormIncomeData, 'income'> & {yearmonth: string}
+type IncomeInputData = FormValueReadyToSend<FormIncomeData>
 
-type ExpenseInputData = FormExpenseData & {yearmonth: string}
+type ExpenseInputData = FormValueReadyToSend<FormExpenseData>
 
 interface CheckAuthData {
     uid: number;

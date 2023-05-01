@@ -27,20 +27,11 @@ export const extractKeysFromData = <T extends object>(data: T, removeKeys: strin
     return updatedFormValues as T
 }
 
-type FormatValuesForSchema = (formValues: FormValue) => ReturnFormValue;
+type FormatValuesForSchema = (formValues: FormValue) => FormValueReadyToSend;
 
 export const formatFormValuesForSchema: FormatValuesForSchema = formValues => {
     const yearmonth = `${formValues.year}-${formValues.month}`
     return {...getObject<FormValue>(formValues), yearmonth}
-
-    //     for(const [key, value] of Object.entries(formValues)) {
-    //         returnFormValues = {
-    //             ...returnFormValues,
-    //             [key]: value
-    //         }
-    //     }
-
-    // return returnFormValues as R
 }
 
 const getObject = <R extends object>(originalObject: R): R=> {

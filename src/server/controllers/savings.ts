@@ -3,7 +3,7 @@ import type { RunResult } from 'sqlite3'
 import db from '../db'
 
 import {
-    checkSavingMonthExist,
+    // checkSavingMonthExist,
     checkFieldFulfilled
 } from '../utils'
 
@@ -25,6 +25,82 @@ export const getTotal = (req: Request, res: Response) => {
     })
 }
 
+const checkYearMonthMixin = (req: Request, res: Response) => {
+    return class CheckThisMonthRecord {
+        private params = [req.params.uid, req.params.yearmonth]
+        private sql = ''
+
+        constructor(sql: string) {
+            this.sql = sql
+        }
+        
+        excecute() {
+            db.get(this.sql, this.params, (err, row: {yearmonth: string} | undefined) => {
+                if (err) {
+                    res.status(400).json({
+                        success: false,
+                        message: 'Something wrong with request parameters.'
+                    })
+                }
+        
+                res.status(200).json({
+                    success: true,
+                    exist: !!row?.yearmonth
+                })
+            })
+        }
+    }
+}
+export const checkThisMonthExpenses = (req: Request, res: Response) => {
+    const sql = `
+        SELECT *
+        FROM expense_details
+        WHERE uid = ? AND yearmonth = ?
+    `
+    const CheckBase = checkYearMonthMixin(req, res)
+    const checkThisMonthExpenses = new CheckBase(sql)
+    checkThisMonthExpenses.excecute()
+}
+
+export const checkThisMonthIncome = (req: Request, res: Response) => {
+    const sql = `
+        SELECT *
+        FROM income_details
+        WHERE uid = ? AND yearmonth = ?
+    `
+    const CheckBase = checkYearMonthMixin(req, res)
+    const checkThisMonthIncome = new CheckBase(sql)
+    checkThisMonthIncome.excecute()
+}
+
+const updateDBMixin = (res: Response) => {
+    return class AddRecord {
+        private sql
+        private params
+
+        constructor(sql: string, params: (string|number)[]) {
+            this.sql = sql
+            this.params = params
+        }
+
+        execute() {
+            db.run(this.sql, this.params, (err: Error | null) => {
+                if (err) {
+                    res.status(400).json({
+                        success: false,
+                        message: err.message
+                    })
+                } else {
+                    res.status(200).json({
+                        success: true,
+                        message: 'Data added.'
+                    })
+                }
+            })
+        }
+    }
+}
+
 export const addIncome = (req: Request, res: Response) => {
     const { uid, yearmonth, year, month, income, memo } = req.body
     if (!income) {
@@ -32,22 +108,15 @@ export const addIncome = (req: Request, res: Response) => {
             success: false,
             message: 'No input data to save.'
         })
-        return
-    }
-    // Check if the user already added income in the same year-month
-    const {isNewRecord, existingRecord} = checkSavingMonthExist(+uid, yearmonth)
-    const params = [+uid, yearmonth, year, month, +income, memo]
-    //@TODO: Add to db
-    if (isNewRecord) {
+    } else {
         const sql = `
-        INSERT INTO income_details
-        VALUES (?,?,?,?,?,?,?,?)
+            INSERT INTO income_details
+            VALUES (?,?,?,?,?,?,?,?)
         `
-        db.run(sql, params)
-        console.log("TODO: add to db")
-    }
-    else {
-        console.log("TODO: add to db")
+        const params = [+uid, yearmonth, year, month, +income, memo]
+        const Executor = updateDBMixin(res)
+        const updateDatabase = new Executor(sql, params)
+        updateDatabase.execute()
     }
 }
 
@@ -59,40 +128,34 @@ export const addExpenses = (req: Request, res: Response) => {
             success: false,
             message: 'no input data to save.'
         })
-        return
-    }
-
-    // Check if there are more savings in the same year&month
-    const {isNewRecord, existingRecord} = checkSavingMonthExist(+uid, yearmonth)
-    const params:(string|number)[] = [+uid, yearmonth, +fashion, +food, +hobby, +school]
-    // If not, save it
-    if (isNewRecord && existingRecord === null) {
+    } else {
         const sql = `
             INSERT INTO expense_details
             VALUES (?,?,?,?,?,?,?,?)
         `
-        db.run(sql, params, (err: Error | null) => {
-            if (err) {
-                res.status(400).json({
-                    success: false,
-                    message: err.message
-                })
-            } else {
-                res.status(200).json({
-                    success: true,
-                    message: 'Data added.'
-                })
-            }
-        })
-    }
-    // Else sum up the saving values
-    else {
-        console.log(existingRecord)
-    }
+        const params:(string|number)[] = [+uid, yearmonth, +fashion, +food, +hobby, +school]
 
-    // Move to total update.
-    // next()
+        const Executor = updateDBMixin(res)
+        const updateDatabase = new Executor(sql, params)
+        updateDatabase.execute()
+    }
 }
+
+
+export const updateIncpme = (req: Request, res: Response) => {
+    //@TODO Query to update income in the same yearmonth row.
+    res.status(200).json({
+        success: true
+    })
+}
+
+export const updateExpenses = (req: Request, res: Response) => {
+    //@TODO Query to update expenses in the same yeamonth row.
+    res.status(200).json({
+        success: true
+    })
+}
+
 
 export const updateTotal = (req: Request, res: Response) => {
     const sql = `UPDATE savings SET total = ? WHERE uid = ?`

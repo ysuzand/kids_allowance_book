@@ -60,6 +60,6 @@ type FormIncomeData = {
     memo: string;
 }
 
-type ReturnFormValue = {
+type FormValueReadyToSend = {
     yearmonth: string;
 } & (FormExpenseData | FormIncomeData);

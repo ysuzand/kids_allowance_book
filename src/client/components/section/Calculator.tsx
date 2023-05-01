@@ -6,7 +6,9 @@ import {
     GetTotalAjax,
     UpdateTotalAjax,
     AddExpenseAjax,
-    AddIncomeAjax
+    AddIncomeAjax,
+    GetExpenseRecordAjax,
+    GetIncomeRecordAjax
 } from '@utils/ajax'
 import { useUserInfo } from '@providers/UserProvider'
 import Form from '@components/form/Form'
@@ -17,26 +19,44 @@ import { formatFormValuesForSchema } from '@utils/format'
 const Calculator = () => {
     const [total, setTotal] = useState(0)
     const [formType, setFormType] = useState('expense')
-    const [inputData, setInputData] = useState({})
     const isExpense = formType === 'expense'
     const { uid } = useUserInfo()
 
-    const updateTotal = (calcValues: {formValue: FormValue; subTotal: number}) => {
+    const update = async (calcValues: {formValue: FormValue; subTotal: number}) => {
         const { subTotal } = calcValues
-        const updatedAmount = isExpense ? total - subTotal : total + subTotal
-        const formValues = calcValues.formValue
-        setTotal(updatedAmount)
+        handleTotal(subTotal)
         
-        const readyData = formatFormValuesForSchema(formValues)
-        console.log('ready to add Data', readyData)
-        //@ts-ignore @TODO: type check & backend implementation
-        // formType === 'expense' ? AddExpenseAjax(readyData, uid) : AddIncomeAjax(readyData, uid)
-        // UpdateTotalAjax({total: updatedAmount}, uid)
-        // setInputData(calcValues.formValue) // Ajax instead.
+        const readyData: FormValueReadyToSend = formatFormValuesForSchema(calcValues.formValue)
+        const doesExist = await checkIfExistThisMonth(readyData)
+        console.log(readyData)
+        console.log(doesExist)
+        handleAjax(readyData, doesExist ?? false)
     }
 
-    const switchForm = (radioValue: string) => {
-        setFormType(radioValue)
+    const handleTotal = (subTotal: number) => {
+        const updatedAmount = isExpense ? total - subTotal : total + subTotal
+        setTotal(updatedAmount)
+    }
+
+    const checkIfExistThisMonth = async (readyData: FormValueReadyToSend): Promise<boolean> => {  
+        try {
+            const response = formType === 'expense' 
+            ? await GetExpenseRecordAjax(readyData.yearmonth, uid)
+            : await GetExpenseRecordAjax(readyData.yearmonth, uid)
+
+            if (response.data.success) return response.data.exist 
+            throw 'Something went wrong.'
+        }
+        catch (err) {
+            throw err
+        }
+    }
+
+    const handleAjax = (data: FormValueReadyToSend, exist: boolean) => {
+        formType === 'expense'
+            ? AddExpenseAjax(data, uid, exist)
+            : AddIncomeAjax(data, uid, exist)
+        // UpdateTotalAjax({total}, uid)
     }
 
     useEffect(() => {
@@ -49,9 +69,9 @@ const Calculator = () => {
     return (
         <div>
             <TotalSavings total={total}/>
-            <Switch onChange={switchForm}/>
+            <Switch onChange={setFormType}/>
             <hr className='mb-4' />
-            <Form onCalc={updateTotal} type={formType}/>
+            <Form onCalc={update} type={formType}/>
         </div>
     )
 }
