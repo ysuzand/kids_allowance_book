@@ -7,7 +7,7 @@ import {
     checkThisMonthExpenses,
     checkThisMonthIncome,
     updateExpenses,
-    updateIncpme
+    updateIncome
 } from './controllers/savings'
 import {
     findUser
@@ -37,7 +37,7 @@ app.get('/api/savings/:uid/income/:yearmonth', checkThisMonthIncome)
 app.put('/api/savings/:uid/expenses', addExpenses)
 app.put('/api/savings/:uid/income', addIncome)
 app.patch('/api/savings/:uid/expenses', updateExpenses) //@TODO
-app.patch('/api/savings/:uid/income', updateIncpme) //@TODO
+app.patch('/api/savings/:uid/income', updateIncome) //@TODO
 app.patch('/api/savings/:uid', updateTotal)
 
 app.listen(port, () => {

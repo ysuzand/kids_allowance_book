@@ -28,8 +28,6 @@ const Calculator = () => {
         
         const readyData: FormValueReadyToSend = formatFormValuesForSchema(calcValues.formValue)
         const doesExist = await checkIfExistThisMonth(readyData)
-        console.log(readyData)
-        console.log(doesExist)
         handleAjax(readyData, doesExist ?? false)
     }
 

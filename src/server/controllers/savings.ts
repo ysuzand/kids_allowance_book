@@ -1,13 +1,11 @@
 import type { Request, Response } from 'express'
-import type { RunResult } from 'sqlite3'
 import db from '../db'
 
 import {
-    // checkSavingMonthExist,
     checkFieldFulfilled
 } from '../utils'
 
-export const getTotal = (req: Request, res: Response) => {
+const getTotal = (req: Request, res: Response) => {
     const sql = 'SELECT * FROM savings WHERE uid = ?'
     const params = [+req.params.uid]
     db.get(sql, params, (err, row) => {
@@ -51,7 +49,8 @@ const checkYearMonthMixin = (req: Request, res: Response) => {
         }
     }
 }
-export const checkThisMonthExpenses = (req: Request, res: Response) => {
+
+const checkThisMonthExpenses = (req: Request, res: Response) => {
     const sql = `
         SELECT *
         FROM expense_details
@@ -62,7 +61,7 @@ export const checkThisMonthExpenses = (req: Request, res: Response) => {
     checkThisMonthExpenses.excecute()
 }
 
-export const checkThisMonthIncome = (req: Request, res: Response) => {
+const checkThisMonthIncome = (req: Request, res: Response) => {
     const sql = `
         SELECT *
         FROM income_details
@@ -101,7 +100,7 @@ const updateDBMixin = (res: Response) => {
     }
 }
 
-export const addIncome = (req: Request, res: Response) => {
+const addIncome = (req: Request, res: Response) => {
     const { uid, yearmonth, year, month, income, memo } = req.body
     if (!income) {
         res.status(400).json({
@@ -120,7 +119,7 @@ export const addIncome = (req: Request, res: Response) => {
     }
 }
 
-export const addExpenses = (req: Request, res: Response) => {
+const addExpenses = (req: Request, res: Response) => {
     const { uid, yearmonth, fashion, food, hobby, school } = req.body
     const userFilled = checkFieldFulfilled({fashion, food, hobby, school})
     if (!userFilled) {
@@ -141,23 +140,21 @@ export const addExpenses = (req: Request, res: Response) => {
     }
 }
 
-
-export const updateIncpme = (req: Request, res: Response) => {
+const updateIncome = (req: Request, res: Response) => {
     //@TODO Query to update income in the same yearmonth row.
     res.status(200).json({
         success: true
     })
 }
 
-export const updateExpenses = (req: Request, res: Response) => {
+const updateExpenses = (req: Request, res: Response) => {
     //@TODO Query to update expenses in the same yeamonth row.
     res.status(200).json({
         success: true
     })
 }
 
-
-export const updateTotal = (req: Request, res: Response) => {
+const updateTotal = (req: Request, res: Response) => {
     const sql = `UPDATE savings SET total = ? WHERE uid = ?`
     const params = [+req.body.total, +req.params.uid]
     
@@ -173,4 +170,15 @@ export const updateTotal = (req: Request, res: Response) => {
             message: 'New total value has been added.'
         })
     })
+}
+
+export {
+    getTotal,
+    checkThisMonthExpenses,
+    checkThisMonthIncome,
+    addExpenses,
+    addIncome,
+    updateExpenses,
+    updateIncome,
+    updateTotal
 }
