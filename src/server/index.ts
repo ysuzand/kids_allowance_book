@@ -32,13 +32,16 @@ app.post('/api/login', findUser)
  * CRUD API
  */
 app.get('/api/savings/:uid', getTotal)
-app.get('/api/savings/:uid/expenses/:yearmonth', checkThisMonthExpenses)
-app.get('/api/savings/:uid/income/:yearmonth', checkThisMonthIncome)
-app.put('/api/savings/:uid/expenses', addExpenses)
-app.put('/api/savings/:uid/income', addIncome)
-app.patch('/api/savings/:uid/expenses', updateExpenses) //@TODO
-app.patch('/api/savings/:uid/income', updateIncome) //@TODO
 app.patch('/api/savings/:uid', updateTotal)
+
+app.get('/api/savings/:uid/expenses/:yearmonth', checkThisMonthExpenses)
+app.patch('/api/savings/:uid/expenses', updateExpenses) //@TODO
+app.put('/api/savings/:uid/expenses', addExpenses)
+
+app.get('/api/savings/:uid/income/:yearmonth', checkThisMonthIncome)
+app.patch('/api/savings/:uid/income', updateIncome) //@TODO
+app.put('/api/savings/:uid/income', addIncome)
+
 
 app.listen(port, () => {
     console.log(`Server is running on: ${port}`)

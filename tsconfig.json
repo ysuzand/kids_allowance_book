@@ -3,6 +3,7 @@
     "baseUrl": "src",
     "paths": {
       "@components/*": ["client/components/*"],
+      "@config/*": ["client/config/*"],
       "@providers/*": ["client/providers/*"],
       "@assets/*": ["client/assets/*"],
       "@utils/*": ["client/utils/*"],

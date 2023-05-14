@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 import db from '../db'
-
+import { updateDBMixin, checkYearMonthMixin } from './mixins'
 import {
     checkFieldFulfilled
 } from '../utils'
@@ -23,33 +23,6 @@ const getTotal = (req: Request, res: Response) => {
     })
 }
 
-const checkYearMonthMixin = (req: Request, res: Response) => {
-    return class CheckThisMonthRecord {
-        private params = [req.params.uid, req.params.yearmonth]
-        private sql = ''
-
-        constructor(sql: string) {
-            this.sql = sql
-        }
-        
-        excecute() {
-            db.get(this.sql, this.params, (err, row: {yearmonth: string} | undefined) => {
-                if (err) {
-                    res.status(400).json({
-                        success: false,
-                        message: 'Something wrong with request parameters.'
-                    })
-                }
-        
-                res.status(200).json({
-                    success: true,
-                    exist: !!row?.yearmonth
-                })
-            })
-        }
-    }
-}
-
 const checkThisMonthExpenses = (req: Request, res: Response) => {
     const sql = `
         SELECT *
@@ -70,34 +43,6 @@ const checkThisMonthIncome = (req: Request, res: Response) => {
     const CheckBase = checkYearMonthMixin(req, res)
     const checkThisMonthIncome = new CheckBase(sql)
     checkThisMonthIncome.excecute()
-}
-
-const updateDBMixin = (res: Response) => {
-    return class AddRecord {
-        private sql
-        private params
-
-        constructor(sql: string, params: (string|number)[]) {
-            this.sql = sql
-            this.params = params
-        }
-
-        execute() {
-            db.run(this.sql, this.params, (err: Error | null) => {
-                if (err) {
-                    res.status(400).json({
-                        success: false,
-                        message: err.message
-                    })
-                } else {
-                    res.status(200).json({
-                        success: true,
-                        message: 'Data added.'
-                    })
-                }
-            })
-        }
-    }
 }
 
 const addIncome = (req: Request, res: Response) => {
@@ -158,18 +103,9 @@ const updateTotal = (req: Request, res: Response) => {
     const sql = `UPDATE savings SET total = ? WHERE uid = ?`
     const params = [+req.body.total, +req.params.uid]
     
-    db.run(sql, params, err => {
-        if (err) {
-            res.status(400).json({
-                success: false
-            })
-            return
-        }
-        res.status(200).json({
-            success: true,
-            message: 'New total value has been added.'
-        })
-    })
+    const Executor = updateDBMixin(res)
+    const updateDatabase = new Executor(sql, params)
+    updateDatabase.execute()
 }
 
 export {

@@ -14,7 +14,7 @@ import {
 import Input from '@components/form/Input'
 import Select from '@components/form/Select'
 import SubmitButton from '@components/form/Submit'
-import { expenseFormMap, incomeFormMap } from '../../map/form'
+import { expenseFormMap, incomeFormMap } from '../../config/form-mapping'
 
 interface IFormItem {
     [key: string]: 
@@ -39,7 +39,11 @@ const initFormValues: FormValueState = {
     'memo': ''
 }
 
-const createForm = (type: string, state: FormValueState, inputValueHandler: (...args: any) => void) => {
+const createForm = (
+    type: string,
+    state: FormValueState,
+    inputValueHandler: (e: ChangeEvent<HTMLInputElement>) => void
+) => {
     const form = type === 'expense' ? expenseFormMap : incomeFormMap
     return form.map((item, i) => {
         // If several components need to be in one row.
