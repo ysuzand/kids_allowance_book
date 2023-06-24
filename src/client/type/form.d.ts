@@ -20,8 +20,8 @@ interface ComponentInArray {
 interface InputProps {
     type: HTMLInputTypeAttribute;
     id: string;
-    icon: string;
-    color: string;
+    icon?: string;
+    color?: string;
     min?: string;
     max?: string;
     placeholder?: string;
@@ -42,6 +42,7 @@ interface InputSelectProps {
 interface SubmitButtonProps {
     children: ReactNode;
     disabled?: boolean;
+    className?: string;
 }
 
 type FormExpenseData = {

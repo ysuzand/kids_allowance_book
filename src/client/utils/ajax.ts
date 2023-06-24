@@ -43,6 +43,6 @@ export const AddIncomeAjax = (data: IncomeInputData, uid: number, exist: boolean
 }
 
 // @TODO: Extra check with password or token.
-export const CheckAuth = ({uid}: CheckAuthData): Promise<AxiosResponse<boolean>> => {
+export const CheckAuth = ({uid, uuid}: CheckAuthData): Promise<AxiosResponse<UserInfo>> => {
     return AxiosInstance.post('/login')
 }

@@ -10,7 +10,7 @@ import {
     updateIncome
 } from './controllers/savings'
 import {
-    findUser
+    findUser,
 } from './controllers/user'
 import cors from 'cors'
 import bodyParser from 'body-parser'

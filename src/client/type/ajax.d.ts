@@ -8,4 +8,5 @@ type ExpenseInputData = FormValueReadyToSend<FormExpenseData>
 
 interface CheckAuthData {
     uid: number;
+    uuid: string;
 }

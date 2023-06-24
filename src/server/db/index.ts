@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS users (
     uid INTEGER PRIMARY KEY AUTOINCREMENT,
     name text,
     password text,
+    session text,
     UNIQUE(name, password)
 )`
 
@@ -44,8 +45,8 @@ CREATE TABLE IF NOT EXISTS income_details (
 `
 
 const INIT_USER = ` INSERT INTO users
-                    (name, password)
-                    VALUES (?,?)`
+                    (name, password, session)
+                    VALUES (?,?,?)`
 const INIT_SAVINGS = `  INSERT INTO savings
                         (uid, total)
                         VALUES (?,?)`
@@ -56,20 +57,22 @@ const INIT_INCOME = `INSERT INTO income_details
                     (uid, yearmonth, year, momth, income, memo)
                     VALUES (?,?,?,?,?,?)`
 
-db.serialize(() => {
-    // db.run(`DROP TABLE income_details`)
+// db.serialize(() => {
+//     // db.run(`DROP TABLE users`)
+//     // db.run(`DROP TABLE income_details`)
 
-    // db.run(CREATE_USERS_TABLE,
-    //     //@ts-ignore
-    // (err, rows) => {
-    //     if (err) {
-    //         console.log(err)
-    //     } else {
-    //         console.log('savings table insert')
-    //         const stmt = db.prepare(INIT_USER)
-    //         // stmt.run(['tree', 'hello'])
-    //     }
-    // })
+//     db.run(CREATE_USERS_TABLE,
+//         //@ts-ignore
+//     (err, rows) => {
+//         if (err) {
+//             console.log(err)
+//         } else {
+//             console.log('savings table insert')
+//             const stmt = db.prepare(INIT_USER)
+//             const uuid = crypto.randomUUID();
+//             stmt.run(['tree', 'hello', uuid])
+//         }
+//     })
 
     // db.run(CREATE_SAVINGS_TABLE,
     // (err, rows) => {
@@ -104,6 +107,6 @@ db.serialize(() => {
     //             // stmt.run([1, '2023-1', '2023', '1', 100, 'my monthly allowance'])
     //         }
     //     })
-})
+// })
 
 export default db

@@ -1,4 +1,4 @@
-import type { ReactElement, FunctionComponent } from 'react'
+import type { ReactElement } from 'react'
 import { useState , createElement } from 'react'
 import { UI } from '@type/enums'
 import UserInfoProvider from '@providers/UserProvider'
@@ -18,18 +18,22 @@ const sectionMap: SectionMap = {
 const App = (): ReactElement => {
   const [ui, setUi] = useState(UI.CALC)
   const [isAuth, setIsAuth] = useState(false)
+  let user = null
   const changeUi = () => {
     const updateUI = ui === UI.CALC ? UI.GRAPH : UI.CALC
     setUi(updateUI)
   }
 
-  const checkAuth = (isAuth: boolean) => {
+  const checkAuth = (isAuth: boolean, userInfo: UserInfo | null) => {
     console.log("auth?: ", isAuth)
-    if (isAuth) {
+    if (!isAuth) {
+      setUi(UI.NO_AUTH)
+    } else {
       setIsAuth(true)
       setUi(UI.CALC)
-    } else {
-      setUi(UI.NO_AUTH)
+      if (userInfo) {
+        user = userInfo
+      }
     }
   }
   return (
@@ -48,10 +52,7 @@ const App = (): ReactElement => {
                   alt={ui === UI.CALC ? 'Open a graph page to see your savings' : 'Back to income/expense registration page'}
                 />
               </button>
-              {
-                (ui in sectionMap) && createElement(sectionMap[ui])
-              }
-              
+              { (ui in sectionMap) && createElement(sectionMap[ui]) }
             </UserInfoProvider>
           : <Login onAuth={checkAuth}/>
         }
