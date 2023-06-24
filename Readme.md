@@ -1,5 +1,5 @@
 # Kids Allowance Book
-Application status: WIP
+Status: WIP
 ## About
 _A simple application that could help you to keep how much money your kids have spent and how much left in their "digital" savings, etc. It is just like a small digital biggy bank._
 
@@ -16,6 +16,7 @@ _The target users would be kids and their parents._
 * Chart.js
 * TailwindCss
 * Vite
+* Vitest + Tesing Library (WIP)
 
 **Backend**
 * Node.js (Express.js)
@@ -33,3 +34,4 @@ npm install
 ```bash
 npm run start
 ```
+![application ui](./public/app_ui.png)

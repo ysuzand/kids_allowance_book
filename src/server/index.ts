@@ -27,6 +27,7 @@ app.use(cors({
  * AUTH
  */
 app.post('/api/login', findUser)
+//@TODO: add app.post('/api/login/user-input')
 
 /**
  * CRUD API

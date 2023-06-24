@@ -37,26 +37,26 @@ const App = (): ReactElement => {
     }
   }
   return (
-      <div className='flex flex-col'>
-        { 
-        // ui !== UI.LOGIN && isAuth
-        true
-          ? <UserInfoProvider>
-              <button
-                onClick={changeUi}
-                className='bg-transparent w-fit'
-              >
-                <IconButton
-                  color='bg-white'
-                  iconSrc={`/assets/${ui === UI.CALC ? 'graph' : 'bank'}.svg`}
-                  alt={ui === UI.CALC ? 'Open a graph page to see your savings' : 'Back to income/expense registration page'}
-                />
-              </button>
-              { (ui in sectionMap) && createElement(sectionMap[ui]) }
-            </UserInfoProvider>
-          : <Login onAuth={checkAuth}/>
-        }
-      </div>
+    <div className='flex flex-col'>
+      { 
+      // ui !== UI.LOGIN && isAuth
+      true
+        ? <UserInfoProvider>
+            <button
+              onClick={changeUi}
+              className='bg-transparent w-fit'
+            >
+              <IconButton
+                color='bg-white'
+                iconSrc={`/assets/${ui === UI.CALC ? 'graph' : 'bank'}.svg`}
+                alt={ui === UI.CALC ? 'Open a graph page to see your savings' : 'Back to income/expense registration page'}
+              />
+            </button>
+            { (ui in sectionMap) && createElement(sectionMap[ui]) }
+          </UserInfoProvider>
+        : <Login onAuth={checkAuth}/>
+      }
+    </div>
   )
 }
 
