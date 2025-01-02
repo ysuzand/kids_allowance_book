@@ -11,6 +11,7 @@ import {
 } from './controllers/savings'
 import {
     findUser,
+    createUser,
 } from './controllers/user'
 import cors from 'cors'
 import bodyParser from 'body-parser'
@@ -28,7 +29,7 @@ app.use(cors({
  */
 app.post('/api/login', findUser)
 //@TODO: add app.post('/api/login/user-input')
-
+app.post('/api/login/user-input', createUser)
 /**
  * CRUD API
  */

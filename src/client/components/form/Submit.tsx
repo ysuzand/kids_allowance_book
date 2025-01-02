@@ -9,10 +9,11 @@ const SubmitButton = ({
 	return (
 		<button
 			disabled={disabled}
+			type="submit"
 			className={
-				Css([
+				Css(
 					'transition ease-in h-12 border-black border-4 rounded-full bg-indigo-600 hover:bg-indigo-800 text-white text-2xl',
-					className])}
+					className)}
 			>
 			{ children }
 		</button>

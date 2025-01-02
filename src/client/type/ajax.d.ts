@@ -10,3 +10,8 @@ interface CheckAuthData {
     uid: number;
     uuid: string;
 }
+
+interface CreateUserInputs {
+    name: string;
+    password: string;
+}

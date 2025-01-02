@@ -46,3 +46,7 @@ export const AddIncomeAjax = (data: IncomeInputData, uid: number, exist: boolean
 export const CheckAuth = ({uid, uuid}: CheckAuthData): Promise<AxiosResponse<UserInfo>> => {
     return AxiosInstance.post('/login')
 }
+
+export const CreateAuth = ({name, password}: CreateUserInputs) => {
+    AxiosInstance.post('/login/user-input', {name, password})
+}

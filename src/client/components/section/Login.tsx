@@ -29,6 +29,7 @@ const Login = ({
 				console.info('TODO: redirect to proper login page.')
 				setIsEasyLogin(false)
 			} else {
+				console.log(uid, uuid)
 				const res = await CheckAuth({uid, uuid})
 			console.log("auth success!", res)
 			onAuth(true, res.data)

@@ -27,11 +27,11 @@ _The target users would be kids and their parents._
 ### __How to run the app locally__
 #### 1) Install dependencies
 ````bash
-npm install
+pnpm install
 ````
 
 #### 2) Run both frontend and backend
 ```bash
-npm run start
+pnpm run start
 ```
 ![application ui](./public/app_ui.png)
